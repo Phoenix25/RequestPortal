@@ -61,9 +61,25 @@ class PGRAccountEditView(UpdateView):
 	def get_success_url(self):
 		return reverse("query:base")
 
-class PGRAccountDetail(DetailView):
+class PGRAccountDetailView(DetailView):
 	model = PGRData
-	template_name = ""
+	
+	def get_object(self):
+		obj = PGRData.objects.filter(user = User.objects.filter(pk = self.request.GET["pk"])[0])[0]
+		return obj
+	
+class UserAccountDetailView(DetailView):
+	model = UserData
+	
+	def dispatch(self, request, *args, **kwargs):
+		if not request.user.is_authenticated:
+			return reverse('login')
+		return super(UserAccountDetailView, self).dispatch(request,*args,*kwargs)
+		
+	def get_object(self):
+		obj = UserData.objects.filter(user = self.request.user)[0]
+		return obj
+	
 class UserAccountEditView(UpdateView):
 
 	model = UserData
@@ -84,3 +100,51 @@ class UserAccountEditView(UpdateView):
 	
 	def get_success_url(self):
 		return reverse("query:base")
+		
+class QuoteDetailView(DetailView):
+	model = Quote
+	def get_object(self):
+		return Quote.objects.filter(pk = self.request.GET['id'])[0]
+	def dispatch(self, request, *args, **kwargs):
+		
+		if not self.request.user.is_authenticated:
+			return redirect("accounts:login")
+		
+		if not Quote.objects.filter(pk = self.request.GET['id'])[0].user == self.request.user:
+			raise PermissionDenied("Not Allowed")
+		
+		if "Photographer" in request.user.groups.all():
+			self.template_name = "pgr-quote-detail.html"
+		elif "General User" in request.user.groups.all():
+			self.template_name = "user-quote-detail.html"
+		
+		
+		return super(UpdateView, self).dispatch(request,*args,**kwargs)
+
+class QuoteRequestDetailView(DetailView):
+	model = QuoteRequest
+	def get_object(self):
+		return QuoteRequest.objects.filter(pk = self.request.GET['id'])[0]
+	def dispatch(self, request, *args, **kwargs):
+		
+		if not self.request.user.is_authenticated:
+			return redirect("accounts:login")
+		
+		if not QuoteRequest.objects.filter(pk = self.request.GET['id'])[0].user == self.request.user:
+			raise PermissionDenied("Not Allowed")
+			
+		if "Photographer" in request.user.groups.all():
+			return PermissionDenied("Not Allowed")
+		elif "General User" in request.user.groups.all():
+			self.template_name = "user-quote-detail.html"
+		
+		
+		return super(UpdateView, self).dispatch(request,*args,**kwargs)
+		
+class QuoteListView(ListView):
+	#unimplemented as of now.
+	pass;
+
+class QuoteRequestListView(ListView):
+	#unimplemented as of now.
+	pass;	
