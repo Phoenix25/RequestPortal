@@ -11,4 +11,5 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^query/', include('query.urls', namespace='query')),
 	url(r'^quote/', include('quote.urls', namespace='quote')),
+	url(r'^accounts/', include('accounts.urls', namespace='accounts')),
 )

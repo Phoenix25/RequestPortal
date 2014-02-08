@@ -1,11 +1,12 @@
 from django.shortcuts import render
 from django.views.generic.edit import UpdateView
-# Create your views here.
+from django.views.generic.detail import DetailView
 
 from registration.backends.simple.views import RegistrationView
 from accounts.forms import DetailForm
-from query.models import PGRData as UserData
-from django.core.exceptions import PermissionDenied
+from query.models import PGRData
+from accounts.models import UserData
+from django.core.exceptions import PermissionDenied,ValidationError
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User
 from django.http import HttpResponse
@@ -17,27 +18,56 @@ permission_lists = {'test':['pybb.add_post','pybb.view_post']}
 class AccountRegistrationView(RegistrationView):
 	form_class = DetailForm
 	def register(self, request, **cleaned_data):
-		
-		#if(User.objects.filter(email=cleaned_data['email']).count() != 0):
-		#	raise PermissionDenied("X") # redirect to.
-			
-		#if(User.objects.filter(username=cleaned_data['username']).count() != 0):
-		#	raise PermissionDenied("Y") # redirect to.
 			
 		user = super(AccountRegistrationView, self).register(request, **cleaned_data)
-		#user.groups.add(cleaned_data['group'])
-		user_profile = UserData(user = user)
+		user.groups.add(request.POST['group'])
+		user_profile = []
+		if self.request.POST["group"] == "1":
+			user_profile = PGRData(user = user)
+		elif self.request.POST["group"] == "2":
+			user_profile = UserData(user = user)
 		user_profile.save()
 		return user
+	def get_context_data(self, **kwargs):
+		ctx = super(AccountRegistrationView, self).get_context_data(**kwargs)
+		ctx["group"] = self.request.GET["group"]
+		return ctx;
+	def get_success_url(self, request, new_user):
+		if self.request.POST["group"] == "1":
+			return reverse("accounts:edit_pgr")
+		elif self.request.POST["group"] == "2":
+			return reverse("accounts:edit_user")
+		else:
+			raise ValidationError("User type invalid. Only valid values are 1:Photographer and 2:GeneralUser")
 	
-	def get_success_url():
-		return reverse("accounts:edit")
+class PGRAccountEditView(UpdateView):
+	model = PGRData
 
+	fields = ['name','type','city','desc']
+	template_name = "registration/registration-form.html"
 	
-class AccountEditView(UpdateView):
+	def dispatch(self, request, *args, **kwargs):
+		#if len(UserData.objects.filter(user=self.request.user)) == 0:
+		#	return 
+		
+		if not self.request.user.is_authenticated:
+			return redirect("accounts:login")
+		else:
+			return super(UpdateView, self).dispatch(request,*args,**kwargs)
+	
+	def get_object(self, queryset=None):
+		return PGRData.objects.filter(user=self.request.user)[0]
+	
+	def get_success_url(self):
+		return reverse("query:base")
+
+class PGRAccountDetail(DetailView):
+	model = PGRData
+	template_name = ""
+class UserAccountEditView(UpdateView):
 
 	model = UserData
-	fields = ['name','type','city','desc']
+	fields = ['address']
 	template_name = "registration/registration-form.html"
 	
 	def dispatch(self, request, *args, **kwargs):
@@ -53,4 +83,4 @@ class AccountEditView(UpdateView):
 		return UserData.objects.filter(user=self.request.user)[0]
 	
 	def get_success_url(self):
-		return reverse("pybb:edit_profile")
+		return reverse("query:base")

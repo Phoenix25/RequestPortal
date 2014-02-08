@@ -24,22 +24,13 @@ from django.views.generic.base import TemplateView
 
 #from accounts.views import AccountActivationView as ActivationView
 from accounts.views import AccountRegistrationView as RegistrationView
-from accounts.views import AccountEditView
+from accounts.views import PGRAccountEditView, UserAccountEditView
 
 urlpatterns = patterns('',
                        url(r'^activate/complete/$',
                            TemplateView.as_view(template_name='registration/activation_complete.html'),
                            name='registration_activation_complete'),
-                       # Activation keys get matched by \w+ instead of the more specific
-                       # [a-fA-F0-9]{40} because a bad activation key should still get to the view;
-                       # that way it can return a sensible "invalid key" message instead of a
-                       # confusing 404.
-					   
-					   
-                       #url(r'^activate/(?P<activation_key>\w+)/$',
-                       #    ActivationView.as_view(),
-                       #    name='registration_activate'),
-					   
+                       
                        url(r'^register/$',
                            RegistrationView.as_view(),
                            name='registration_register'),
@@ -50,9 +41,13 @@ urlpatterns = patterns('',
                            TemplateView.as_view(template_name='registration/registration_closed.html'),
                            name='registration_disallowed'),
                        (r'', include('registration.auth_urls')),
-					   url(r'^register/X/$',
-                           AccountEditView.as_view(template_name='registration/registration_form.html'),
+					   url(r'^edit/$',
+                           PGRAccountEditView.as_view(template_name='registration/form_base.html'),
+                           name='edit_pgr'),
+						url(r'^register/X/$',
+                           UserAccountEditView.as_view(template_name='registration/form_base.html'),
                            name='registration_disallowed'),
                        )
-					   
+                       
+						
                        

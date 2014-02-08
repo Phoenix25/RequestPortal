@@ -22,11 +22,6 @@ class DetailForm(forms.Form):
 	def clean(self):
 		if(User.objects.filter(email=self.cleaned_data['email']).count() != 0):
 			raise forms.ValidationError(_("Duplicate Email IDs"))
-		
-		#mail_host = self.cleaned_data['email'].split("@")[1]
-		#if(mail_host.lower() not in mail_hosts and (self.cleaned_data['group'] == "1")):
-		#	raise forms.ValidationError(_("Current Students/Faculty please register with your institute email ID."))
 	
 		return self.cleaned_data
-	# other details
 	

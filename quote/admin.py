@@ -4,4 +4,3 @@ from quote.models import Quote
 
 admin.site.register(QuoteRequest)
 admin.site.register(Quote)
-# Register your models here.
