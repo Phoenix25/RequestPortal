@@ -1,0 +1,11 @@
+<div class="detail_header">
+	Quote Details
+</div>
+{% for object in obj_list %}
+<div class="quote_item" onclick="">
+<div class="detail_type">Customer: {{object.source}}</div>
+<div class="detail_desc">Photographer: {{object.target}}</div>
+<div class="detail_name">Event: {{object.desc}}</div>
+<div class="quote-req-container"><button id="quote-req-button" value="ACCEPT QUOTE" onclick="ajax_direct_dump('../../quote/qrdetails/',{id:{{object.pk}}},'GET','record-container')">See Details</div>
+</div>
+{%endfor%}

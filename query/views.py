@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from query.models import PGRData
 from django.http import HttpResponse
+from django.core.urlresolvers import reverse
 import json
 
 # implement a validation mechanism
@@ -30,7 +31,7 @@ def city_pgr_view(request):
 	filtered = []
 	
 	if not request.user.is_authenticated:
-		return reverse('accounts:login')
+		return reverse('auth_login')
 	
 	if not validate_city(city):
 		city_pgr_fail(request, 'City name is invalid. Please enter a valid city name.')

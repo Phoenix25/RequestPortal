@@ -9,5 +9,5 @@ urlpatterns = patterns('',
                            name='pgr_view'),
 						url(r'^base/$',
                            TemplateView.as_view(template_name="base.html"),
-                           name='pgr_view'),   
+                           name='base'),   
                        )

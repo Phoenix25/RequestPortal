@@ -20,15 +20,22 @@
 	<script type="text/javascript">
 		var global_pgrdata = new Array();
 		var global_pgr_get_status = 0;
-		function pgr_data(name,type,pk,desc){
+		/*function pgr_data(name,type,pk,desc){
 				this.name = name;
 				this.type = type;
 				this.pk = pk;
 				this.desc = desc;
+		}*/
+		// JSON Objects to HTML; utility functions
+		function pgr_to_html(rec){
+			return '<div class="record" style="background-color:#aac" onclick="show_pgr_data('+rec.pk+')"><div class="record-inner-name-container"><div class="record-inner-name">'+rec.name+'</div></div><div class="record-inner-text-container"><div class="record-inner-text">'+rec.desc+'</div></div></div>';
 		}
-		
-		function plug_record(rec){
-			var _html = '<div class="record" style="background-color:#aac" onclick="show_pgr_data('+rec.pk+')"><div class="record-inner-name-container"><div class="record-inner-name">'+rec.name+'</div></div><div class="record-inner-text-container"><div class="record-inner-text">'+rec.desc+'</div></div></div>';
+		function quote_to_html(rec){
+			return '<div class="record" style="background-color:#aac"><div class="record-inner-name-container"><div class="record-inner-name">'+rec.name+'</div></div><div class="record-inner-text-container"><div class="record-inner-text">'+rec.desc+'</div></div></div>';
+		}
+		//----------------------------------------
+		function plug_html(_html){
+			//var _html = '<div class="record" style="background-color:#aac" onclick="show_pgr_data('+rec.pk+')"><div class="record-inner-name-container"><div class="record-inner-name">'+rec.name+'</div></div><div class="record-inner-text-container"><div class="record-inner-text">'+rec.desc+'</div></div></div>';
 			$("#record-container").append(_html);
 		}
 		function attach_animation_handlers(){
@@ -40,18 +47,44 @@
 		}
 		
 		// AJAX functions
-		function show_pgr_data(pk){
+		// This function is used to directly dump incoming HTML from a remote source. It's used for all get operations except while showing the PGR list to the user.
+		function ajax_direct_dump(url,data,type,container){
 			swap_to_load_screen(function(){
 				$.ajax({
-				type: "GET",
-				url: "../../accounts/detail_pgr/",
-				data: { pk: pk },
+				type: type,
+				url: url,
+				data: data,
 				success: function(data, statusCode, XHR){
-					document.getElementById("record-container").innerHTML = data;
+					document.getElementById(container).innerHTML = data;
+					swap_to_container();
+				},
+				error: function(data, statusCode, XHR){
+					document.getElementById(container).innerHTML = data;
 					swap_to_container();
 				}
 				});
 			});
+		}
+		// This function is used to post the contents of a given form and then dump the incoming html into the specified container
+		function ajax_post_and_dump(form,url,type,container){
+			swap_to_load_screen(function(){
+				$.ajax({
+				type: type,
+				url: url,
+				data: $('#'+form).serialize(),
+				success: function(data, statusCode, XHR){
+					document.getElementById(container).innerHTML = data;
+					swap_to_container();
+				},
+				error: function(data, statusCode, XHR){
+					document.getElementById(container).innerHTML = data;
+					swap_to_container();
+				}
+				});
+			});
+		}
+		function show_pgr_data(pk){
+			ajax_direct_dump("../../accounts/detail_pgr/",{pk:pk},"GET","record-container")
 		}
 		function show_pgr_list(){
 			swap_to_load_screen(function(){
@@ -59,15 +92,15 @@
 				document.getElementById("record-container").innerHTML = "";
 				for(i=0;i<global_pgrdata.length;i++){
 					//alert(global_pgrdata[i].first_name);
-					plug_record(global_pgrdata[i]);
+					plug_html(pgr_to_html(global_pgrdata[i]));
 				}
 				attach_animation_handlers();
 				swap_to_container();
 			});
 		}
 		
-		function load_quote_form(pk){
-			$.ajax({
+		function get_quote_form(pk){
+			/*$.ajax({
 				type: "GET",
 				url: "../../quote/quote/",
 				data: { target: pk },
@@ -75,10 +108,11 @@
 					document.getElementById("record-container").innerHTML = data;
 					swap_to_container();
 				}
-			});
+			});*/
+			ajax_direct_dump("../../quote/quote/",{target:pk},"GET","record-container");
 		}
 		function post_quote_form(pk){
-			$.ajax({
+			/*$.ajax({
 				type: "GET",
 				url: "../../quote/quote/",
 				data: $("#quote_form").serialize(),
@@ -86,8 +120,11 @@
 					document.getElementById("record-container").innerHTML = data;
 					swap_to_container();
 				}
-			});
+			});*/
+			// TODO check possible user session loss.
+			ajax_direct_dump("../../quote/quote/?target="+pk,$("#quote_form").serialize(),"POST","record-container");
 		}
+		
 		function swap_to_load_screen(func0){
 			$("#load-container").animate({"opacity":"1"},200);
 			$("#record-container").animate({"opacity":"0"},200,'linear',function(){func0();});
@@ -119,7 +156,7 @@
 			//rec0 = new pgr_data("Ezio","Auditore","1","One of the greatest assassins of all time");
 			//plug_record(rec0);
 			
-			json_get_pgrdata(function(){show_pgr_list()},"blah");
+			json_get_pgrdata(function(){show_pgr_list()},"Arkham");
 			
 		});
 		
@@ -276,9 +313,10 @@
 			<tr>
 				<td width="5%" style="height:4vh;"></td>
 				<td width="15%" style="height:4vh;"><h1 style="font-size:4vh"><strong>hire</strong>fellas</h1></td>
-				<td width="53%" style="height:7vh;text-align:center"></td>
-				<td width="15%" style="height:7vh;text-align:center; "><h3 style="font-size:2vh">HOW IT WORKS</h3></td>
-				<td width="5%" style="height:7vh;text-align:center; font-size:4vh"><h3 style="font-size:2vh">LOGIN</h3></td>
+				<td width="38%" style="height:7vh;text-align:center"></td>
+				<td width="15%" style="height:7vh;text-align:center; " id="hiw" onclick="ajax_direct_dump('../../accounts/edit_pgr/',{},'GET','record-container')"><h3 style="font-size:2vh">PROFILE</h3></td>
+				<td width="15%" style="height:7vh;text-align:center; " id="hiw" onclick="ajax_direct_dump('../../quote/qrlist',{},'GET','record-container')"><h3 style="font-size:2vh">QUOTES</h3></td>
+				<td width="5%" style="height:7vh;text-align:center; font-size:4vh" id="login" onclick="ajax_direct_dump('../../accounts/login',{},'GET','record-container')"><h3 style="font-size:2vh">LOGIN</h3></td>
 				<td width="7%" style="height:7vh;text-align:center"></td>
 			</tr>
 		</table>
@@ -293,6 +331,7 @@
 		</select>
 	</div>
 	<div class="records-container" id="record-container">
+		
 		<!--<div class="record" style="background-color:#aac"></div>
 		<div class="record" style="background-color:#afa"></div>
 		<div class="record" style="background-color:#aac"></div>

@@ -3,5 +3,5 @@
 <form action="" method="POST">
 {%csrf_token%}
 {{form.as_p}}
-<input type="submit"/>
+<div class="quote-req-container"><button id="quote-req-button" value="POST REQUEST" onclick="post_quote_form()">POST REQUEST</button></div>
 </form>
