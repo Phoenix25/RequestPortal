@@ -8,7 +8,7 @@ from query.models import PGRData
 from accounts.models import UserData
 from django.core.exceptions import PermissionDenied,ValidationError
 from django.core.urlresolvers import reverse
-from django.contrib.auth.models import User
+from django.contrib.auth.models import User,Group
 from django.http import HttpResponse
 
 # Create your models here.
@@ -44,7 +44,7 @@ class PGRAccountEditView(UpdateView):
 	model = PGRData
 
 	fields = ['name','type','city','desc']
-	template_name = "registration/registration-form.html"
+	template_name = "query/edit.html"
 	
 	def dispatch(self, request, *args, **kwargs):
 		#if len(UserData.objects.filter(user=self.request.user)) == 0:
@@ -63,6 +63,12 @@ class PGRAccountEditView(UpdateView):
 	def get_success_url(self):
 		return reverse("query:base")
 
+def show_profile(request,**kwargs):
+		if Group.objects.filter(pk=1)[0] in request.user.groups.all():
+			return PGRAccountEditView.as_view(**kwargs)(request)
+		elif Group.objects.filter(pk=2)[0] in request.user.groups.all():
+			return UserAccountEditView.as_view(**kwargs)(request)
+
 class PGRAccountDetailView(DetailView):
 	model = PGRData
 	
@@ -72,7 +78,7 @@ class PGRAccountDetailView(DetailView):
 	
 class UserAccountDetailView(DetailView):
 	model = UserData
-	
+	template_name = "query/edit.html"
 	def dispatch(self, request, *args, **kwargs):
 		if not request.user.is_authenticated:
 			return reverse('auth_login')
@@ -87,8 +93,7 @@ class UserAccountEditView(UpdateView):
 
 	model = UserData
 	fields = ['address']
-	template_name = "registration/registration-form.html"
-	
+	template_name = "query/edit.html"	
 	def dispatch(self, request, *args, **kwargs):
 		#if len(UserData.objects.filter(user=self.request.user)) == 0:
 		#	return 
@@ -98,6 +103,10 @@ class UserAccountEditView(UpdateView):
 		else:
 			return super(UpdateView, self).dispatch(request,*args,**kwargs)
 	
+	def post(self, request, *args, **kwargs):
+		super(UserAccountEditView, self).post(request, *args, **kwargs)
+		return HttpResponse('success')
+		
 	def get_object(self, queryset=None):
 		return UserData.objects.filter(user=self.request.user)[0]
 	

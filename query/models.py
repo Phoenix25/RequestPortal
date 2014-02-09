@@ -9,6 +9,7 @@ type_choices = (
 # more types to come.
 )
 
+# model for associating photographer data with the user object
 class PGRData(models.Model):
 	user = models.OneToOneField(User)
 	name = models.CharField(max_length=50)

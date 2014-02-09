@@ -6,19 +6,26 @@ from django import forms
 from django.utils.translation import ugettext as _
 from django.core.exceptions import PermissionDenied
 from quote.models import QuoteRequest,Quote
+from query.models import PGRData
 from django.contrib.auth.models import User,Group
 from django.core.urlresolvers import reverse
 from django.http import HttpResponse
 import json
 
+# a form model for requesting a quote
 class QuoteForm(forms.Form):
 	desc = forms.CharField(max_length = '300', label = _("Event Description"))
 	place = forms.CharField(max_length = '30', label = _("Event Location"))
 	send_similar = forms.BooleanField(label = _("Send to 5 similar Photographers"))
 	#target = forms.CharField(max_length = '5', label = _("Target(hidden)"))
 
+# this view serves the form.
 class QuoteRequestView(FormView):
 	template_name = 'quote/main.html'
+	
+	
+	# most of the following methods are overrides of FormView's methods when FormVIew attempts to dispatch the request,these functions will be called
+	# put target id in the context so that the template can add a hidden input containing the id of the photographer.
 	def get_context_data(self, **kwargs):
 		ctx = super(QuoteRequestView, self).get_context_data(**kwargs)
 		try:
@@ -26,28 +33,35 @@ class QuoteRequestView(FormView):
 		except KeyError as e:
 			raise PermissionDenied("TARGET_MISSING")
 		return ctx
-		
+	
+	#return the class representing the form
 	def get_form_class(self):
 		return QuoteForm
 	
+	# check if pgr_id is valid. currently unimplemented
 	def validate_pgr_id(self):
 		return true
 	
+	# utility function for finding similar photographers. currently unimplemented
 	def get_similar_pgrs(self,pgr):
 		return [pgr]
 	
 	def redirect_login(self):
 		raise PermissionDenied("Not logged in")
 	
+	# override the root method that is always called no matter what the request type.
 	def dispatch(self,request,*args,**kwargs):
+		# redirect to login if the user is not logged in.
 		if not request.user.is_authenticated:
 			self.redirect_login()
 		else:
 			return super(QuoteRequestView,self).dispatch(request,*args,**kwargs)
 	
+	# function invoked each time a quote request is created. intended to send emails to moderators. currently unimplemented
 	def do_quote(self, request, quote):
 		pass
 	
+	# override post method to create the quote request
 	def post(self, request, *args, **kwargs):
 		pgr = request.POST['target']
 		similar = [pgr]
@@ -61,20 +75,24 @@ class QuoteRequestView(FormView):
 			q = QuoteRequest()
 			q.desc = request.POST['desc']
 			q.location = request.POST['place']
-			q.source = request.user
-			q.target = User.objects.filter(pk = pgr_id)[0]
+			q.source = request.user	# 'source' refers to the customer
+			q.target = PGRData.objects.filter(pk = pgr_id)[0].user # get the target Photographer object and assign it to the QuoteRequest record.
 			q.save()
 			self.do_quote(request, q)
 			
 		ctx = super(QuoteRequestView, self).post(request,*args,**kwargs)
+		
+		# currently return success as the output string since the receiver is expected to be using AJAX.
 		return HttpResponse("Success")
 		
+	# not used if the request is based on AJAX.
 	def get_success_url(self):
 		return reverse("quote:success")
 		
-	
+# this view sends details of a given quote after cheching if the user is either the source or the target of the quote
 class QuoteDetailView(DetailView):
 	model = Quote
+	template_name = "quote/user-quote-detail.html"
 	def get_object(self):
 		return Quote.objects.filter(pk = self.request.GET['id'])[0]
 	def dispatch(self, request, *args, **kwargs):
@@ -82,17 +100,21 @@ class QuoteDetailView(DetailView):
 		if not self.request.user.is_authenticated:
 			return redirect("accounts:login")
 		
-		if not Quote.objects.filter(pk = self.request.GET['id'])[0].user == self.request.user:
+		# check if the user is allowed to see the quote(i.e. either the target or the source)
+		if not ( Quote.objects.filter(pk = self.request.GET['id'])[0].req.source == self.request.user or Quote.objects.filter(pk = self.request.GET['id'])[0].req.target == self.request.user) :
 			raise PermissionDenied("Not Allowed")
 		
-		if "Photographer" in request.user.groups.all():
+		# assign different templates to the target and the source so they can see a personalized version.
+		if Group.objects.filter(pk=1)[0] in request.user.groups.all():
 			self.template_name = "pgr-quote-detail.html"
-		elif "General User" in request.user.groups.all():
+		elif Group.objects.filter(pk=2)[0] in request.user.groups.all():
 			self.template_name = "user-quote-detail.html"
 		
 		
-		return super(UpdateView, self).dispatch(request,*args,**kwargs)
+		return super(QuoteDetailView, self).dispatch(request,*args,**kwargs)
 
+# this view does the same thing as above but for the Quote Request object.
+# additionaly it does not allow photographer users to view QuoteRequest objects.
 class QuoteRequestDetailView(DetailView):
 	model = QuoteRequest
 	def get_object(self):
@@ -112,15 +134,16 @@ class QuoteRequestDetailView(DetailView):
 		
 		
 		return super(QuoteRequestDetailView, self).dispatch(request,*args,**kwargs)
-		
+	
+# utility function for conversion of quote model to a json-friendly dict.
+# currently not used but will be used if searching through quotes is necessary.
 def quote_to_json(lst, request):
 	res = []
 	for i in lst:
-		dict0 = {"source":i.source,"target":i.target,"pk":i.pk,"desc":i.desc,"source_name":i}	# put necessary details only. further details will be communicated later. This is to reduce load times.
+		dict0 = {"source":i.source,"target":i.target,"pk":i.pk,"desc":i.desc}	# put necessary details only. further details will be communicated later. This is to reduce load times.
 		res.append(dict0)
 	return res
 
-# view that returns a list of quotes associated with either 
 """def quote_list_view(self, reqeust):
 	
 	if not request.user.is_authenticated:	 #if it's an anonymous user, redirect to login.
@@ -137,6 +160,7 @@ def quote_to_json(lst, request):
 	
 	return HttpResponse(json.dumps(quote_to_json(filtered)), mimetype = "text/json");"""
 
+#Presents quote request objects as a list.
 class QuoteRequestListView(ListView):
 	model = QuoteRequest
 	context_object_name = "obj_list"
@@ -158,6 +182,7 @@ class QuoteRequestListView(ListView):
 		qs = qs.filter(source = self.request.user)
 		return qs
 	
+# similar to the above view only for quote objects.
 class QuoteListView(ListView):
 	model = Quote
 	context_object_name = "obj_list"
@@ -167,26 +192,25 @@ class QuoteListView(ListView):
 		if not self.request.user.is_authenticated:
 			return redirect("accounts:login")
 			
-		if "Photographer" in request.user.groups.all():
-			self.template_name = "pgr-quote-list.html"
-			user_category = 0
-		elif "General User" in request.user.groups.all():
-			self.template_name = "user-quote-list.html"
-			user_category = 1
+		if Group.objects.filter(pk=1)[0] in request.user.groups.all():
+			self.template_name = "quote/pgr-quote-list.html"
+			self.user_category = 0
+		elif Group.objects.filter(pk=2)[0] in request.user.groups.all():
+			self.template_name = "quote/user-quote-list.html"
+			self.user_category = 1
 		return super(QuoteListView, self).dispatch(request,*args,**kwargs)
 	
 	def get_queryset(self):
-		#qs = super(UpdateView, self).get_queryset()
 		reqs = []
-		if user_category == 0:
+		if self.user_category == 0:
 			reqs = QuoteRequest.objects.filter(target = self.request.user)
 			
-		elif user_category == 1:
+		elif self.user_category == 1:
 			reqs = QuoteRequest.objects.filter(source = self.request.user)
 		
 		quotes = []
 		for i in reqs:
-			q = Quote.objects.filter(request = i)
+			q = Quote.objects.filter(req = i)
 			if not (q.count() == 0):
 				quotes.append(q[0])
 		return quotes

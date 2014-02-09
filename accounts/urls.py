@@ -25,7 +25,7 @@ from django.views.generic.base import TemplateView
 #from accounts.views import AccountActivationView as ActivationView
 from accounts.views import AccountRegistrationView as RegistrationView
 from accounts.views import PGRAccountEditView, UserAccountEditView, PGRAccountDetailView, UserAccountDetailView
-
+from accounts import views
 urlpatterns = patterns('',
 						url(r'^activate/complete/$',
                            TemplateView.as_view(template_name='registration/activation_complete.html'),
@@ -41,8 +41,8 @@ urlpatterns = patterns('',
                            TemplateView.as_view(template_name='registration/registration_closed.html'),
                            name='registration_disallowed'),
 						(r'', include('registration.auth_urls')),
-						url(r'^edit_pgr/$',
-                           PGRAccountEditView.as_view(template_name='query/edit.html'),
+						url(r'^edit/$',
+                           views.show_profile,
                            name='edit_pgr'),
 						url(r'^edit_user/$',
                            UserAccountEditView.as_view(template_name='registration/form_base.html'),

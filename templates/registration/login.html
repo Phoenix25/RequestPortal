@@ -1,6 +1,7 @@
 <form id="login" method="POST" action="">
 {%csrf_token%}
 {{form.as_p}}
+<input type="hidden" name="next" value="../../query/base/"></input>
 <input type=submit></input>
+
 </form>
-<div class="quote-req-container"><button id="quote-req-button" value="POST REQUEST" onclick="ajax_post_and_dump('login','../../accounts/login','POST','record-container')">POST REQUEST</button></div>

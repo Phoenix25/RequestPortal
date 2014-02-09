@@ -1,5 +1,5 @@
 
-from quote.views import QuoteRequestView,QuoteDetailView,QuoteRequestDetailView,QuoteRequestListView
+from quote.views import QuoteRequestView,QuoteDetailView,QuoteRequestDetailView,QuoteRequestListView,QuoteListView
 from django.conf.urls import patterns
 from django.conf.urls import include
 from django.conf.urls import url
@@ -21,4 +21,7 @@ urlpatterns = patterns('',
 						url(r'^qrlist/$',
                            QuoteRequestListView.as_view(),
                            name='qrlist'),
+						url(r'^qlist/$',
+                           QuoteListView.as_view(),
+                           name='qlist'),
                        )
