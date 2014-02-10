@@ -34,9 +34,11 @@ class AccountRegistrationView(RegistrationView):
 		return ctx;
 	def get_success_url(self, request, new_user):
 		if self.request.POST["group"] == "1":
-			return reverse("accounts:edit_pgr")
+			#return reverse("accounts:edit_pgr")
+			return reverse("query:base")
 		elif self.request.POST["group"] == "2":
-			return reverse("accounts:edit_user")
+			#return reverse("accounts:edit_user")
+			return reverse("query:base")
 		else:
 			raise ValidationError("User type invalid. Only valid values are 1:Photographer and 2:GeneralUser")
 	

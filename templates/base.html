@@ -44,6 +44,11 @@
 			},function(){
 					$(this).animate({"opacity":"0.5"},200)
 			});
+			$(".leftbar-li").hover(function(){
+					$(this).animate({"opacity":"1"},200)
+			},function(){
+					$(this).animate({"opacity":"0.3"},200)
+			});
 		}
 		
 		// AJAX functions
@@ -210,16 +215,18 @@
 	}
 	.context_selector{
 		height:100%;
-		width:25%;
+		width:15%;
 		top:10%;
+		left:10%;
 		background-color:black;
 		position:absolute;
 		z-index:1
 	}
 	.back-col{
 		height:100%;
-		width:100%;
-		background-color:#BBB;
+		width:80%;
+		left:10%;
+		background-color:#CCC;
 		position:absolute;
 		z-index:0
 	}
@@ -243,7 +250,7 @@
 	}
 	.records-container{
 		height:90%;
-		width:75%;
+		width:65%;
 		left:25%;
 		top:10%;
 		position:absolute;
@@ -264,7 +271,7 @@
 		padding-left:2px;
 		border-color:#222;
 		width:100%;
-		font-size:5vh;
+		font-size:3vh;
 		font-family: 'Helvetica Bold'
 	}
 	.record-inner-name-container{
@@ -291,7 +298,7 @@
 		padding-left:10px;
 		border-color:#222;
 		width:100%;
-		font-size:3vh;
+		font-size:2vh;
 		font-family: 'Helvetica';
 		font-color: #ccc;
 	}
@@ -299,26 +306,53 @@
 		z-index:0;
 		opacity:1;
 	}
+	.left-hidebar{
+		position:absolute;
+		z-index:5;
+		left:0%;
+		top:0%;
+		height:100%;
+		width:10%;
+		background-color:#DDD;
+	}
+	.right-hidebar{
+		position:absolute;
+		z-index:5;
+		left:90%;
+		top:0%;
+		height:100%;
+		width:10%;
+		background-color:#DDD;
+	}
+	.leftbar-li{
+		width:100%;
+		background-color:green;
+		opacity:0.3;
+		position:relative;
+		text-align: center;
+		font-size:2vh;
+	}
 	#record-container{
 		opacity:0;
 	}
 	</style>
   </head>
 
-  <body bgcolor="#BBBBBB">
+  <body background="#EEE">
 	<!--<img src='img.jpg' style='width:100%;height:100%'/>-->
-    <div class="navbar navbar-inverse navbar-fixed-top navbar-color" role="navigation" style="height:10vh">
+    <div class="navbar navbar-inverse navbar-fixed-top navbar-color" role="navigation" style="height:10vh;z-index:2">
  
 		<table style="width:100%">
 			<tr>
-				<td width="5%" style="height:4vh;"></td>
-				<td width="15%" style="height:4vh;"><h1 style="font-size:4vh"><strong>hire</strong>fellas</h1></td>
-				<td width="38%" style="height:7vh;text-align:center"></td>
-				<td width="10%" style="height:7vh;text-align:center; " id="hiw" onclick="ajax_direct_dump('../../accounts/edit/',{},'GET','record-container')"><h3 style="font-size:2vh">PROFILE</h3></td>
-				<td width="10%" style="height:7vh;text-align:center; " id="hiw" onclick="ajax_direct_dump('../../quote/qrlist',{},'GET','record-container')"><h3 style="font-size:2vh">QUOTES</h3></td>
-				<td width="10%" style="height:7vh;text-align:center; " id="hiw" onclick="ajax_direct_dump('../../quote/qlist',{},'GET','record-container')"><h3 style="font-size:2vh">QUOTE REQS</h3></td>
-				<td width="5%" style="height:7vh;text-align:center; font-size:4vh" id="login" onclick=""><h3 style="font-size:2vh"><a href="../../accounts/login">LOGIN</a></h3></td>
-				<td width="7%" style="height:7vh;text-align:center"></td>
+				<td width="10%" style="height:4vh;"></td>
+				<td width="15%" style="height:4vh;text-align:center"><h1 style="font-size:4vh"><strong>hire</strong>fellas</h1></td>
+				<td width="28%" style="height:7vh;text-align:center"></td>
+				<td width="5%" style="height:7vh;text-align:center; " id="hiw" onclick="ajax_direct_dump('../../accounts/edit/',{},'GET','record-container')"><h3 style="font-size:1.2vh">PROFILE</h3></td>
+				<td width="5%" style="height:7vh;text-align:center; " id="hiw" onclick="ajax_direct_dump('../../quote/qlist',{},'GET','record-container')"><h3 style="font-size:1.2vh">QUOTES</h3></td>
+				<td width="5%" style="height:7vh;text-align:center; " id="hiw" onclick="ajax_direct_dump('../../quote/qrlist',{},'GET','record-container')"><h3 style="font-size:1.2vh">QUOTE REQS</h3></td>
+				<td width="5%" style="height:7vh;text-align:center; " id="hiw"><h3 style="font-size:1.2vh"><a href="../../accounts/register?group=1">REG-AS-PHOTOGRAPHER</a></h3></td>
+				<td width="5%" style="height:7vh;text-align:center; font-size:1.2vh" id="login" onclick=""><h3 style="font-size:1.2vh"><a href="../../accounts/login">LOGIN</a></h3></td>
+				<td width="17%" style="height:7vh;text-align:center"></td>
 			</tr>
 		</table>
 		
@@ -330,6 +364,17 @@
 			<option value="volvo">Wedding Photographer</option>
 			<option value="saab">Event Photographer</option>
 		</select>
+		<div class = "leftbar-li" id="pgr_disp" style="height:4%" onclick="json_get_pgrdata(function(){show_pgr_list()},'Arkham')">
+			<table width="100%" height="100%">
+				<tr>
+					<td style="text-align:center;height:100%;width:100%">
+					<p style="font-size:1.8vh">
+						Display Photographers
+					</p>
+					</td>
+				</tr>
+			</table>
+		</div>
 	</div>
 	<div class="records-container" id="record-container">
 		
@@ -354,7 +399,8 @@
 		</table>
 	</div>
     <!-- /.container -->
-
+	<div class="left-hidebar"></div>
+	<div class="right-hidebar"></div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->
