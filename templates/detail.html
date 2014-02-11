@@ -1,7 +1,15 @@
+<!-- Modify the page as necessary 
+
+	'object' is the record conatining 'type', 'desc' and 'name' fields 
+-->
+
 <div class="detail_header">
 	Photographer Profile
 </div>
-<div class="detail_type">Type: {{object.type}}</div>
-<div class="detail_desc">Desc: {{object.desc}}</div>
-<div class="detail_name">Name: {{object.name}}</div>
-<div class="quote-req-container"><button id="quote-req-button" value="GET QUOTE" onclick="get_quote_form({{object.pk}})">GET QUOTE</button></div>
+<div class="detail_type detail">Type: {{object.type}}</div>
+<div class="detail_desc detail">Desc: {{object.desc}}</div>
+<div class="detail_name detail">Name: {{object.name}}</div>
+
+<!-- the following javascript button is for AJAX. Comment it out if you're going for standard transitions. -->
+<!-- link to /quote/quote/ with GET data: pk = {{object.pk}} as an alternative -->
+<div class="quote-req-container"><div id="quote-req-button" class="btn btn-lg btn-success" value="GET QUOTE" onclick="get_quote_form({{object.pk}})">GET QUOTE</div></div>

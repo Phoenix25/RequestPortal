@@ -27,32 +27,45 @@ from accounts.views import AccountRegistrationView as RegistrationView
 from accounts.views import PGRAccountEditView, UserAccountEditView, PGRAccountDetailView, UserAccountDetailView
 from accounts import views
 urlpatterns = patterns('',
+						# the following 4 views are by registration module for handling activation and registration
 						url(r'^activate/complete/$',
                            TemplateView.as_view(template_name='registration/activation_complete.html'),
                            name='registration_activation_complete'),
-                       
+						   
 						url(r'^register/$',
-                           RegistrationView.as_view(),
+                           RegistrationView.as_view(),	# link to RegistrationView(alias of AccountRegistrationView) in accounts.views. it's a modified version of the django-registration module's RegistrationView
                            name='registration_register'),
+						
+						# templates for the following view's do not exist yet. they are only static pages. create them after design is decided.
 						url(r'^register/complete/$',
                            TemplateView.as_view(template_name='registration/registration_complete.html'),
                            name='registration_complete'),
+						   
 						url(r'^register/closed/$',
                            TemplateView.as_view(template_name='registration/registration_closed.html'),
                            name='registration_disallowed'),
-						(r'', include('registration.auth_urls')),
-						url(r'^edit/$',
+						   
+						(r'', include('registration.auth_urls')),	# include auth_urls from the registration framework for handling login,logout and password change.
+						
+						url(r'^edit/$',	# link to the show_profile function. The show_profile function checks the user group(i.e. whether customer or photographer) and presents the user (or) photographer account details whichever applies.
                            views.show_profile,
-                           name='edit_pgr'),
-						url(r'^edit_user/$',
-                           UserAccountEditView.as_view(template_name='registration/form_base.html'),
-                           name='edit_user'),
+                           name='edit'),
+						
+						# ignore the following commented text.
+						"""url(r'^edit_user/$',
+                           UserAccountEditView.as_view(template_name='registration/form_base.html'),	
+                           name='edit_user'),"""
+						  
+						# present account details for photographer
 						url(r'^detail_pgr/$',
                            PGRAccountDetailView.as_view(template_name='detail.html'),
                            name='detail_pgr'),
+						
+						# present account details for user
 						url(r'^detail_user/$',
                            UserAccountDetailView.as_view(template_name='detail.html'),
                            name='detail_user'),
+						   
                        )
                        
 						

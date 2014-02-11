@@ -15,13 +15,21 @@ import json
 # a form model for requesting a quote
 class QuoteForm(forms.Form):
 	desc = forms.CharField(max_length = '300', label = _("Event Description"))
+	desc.widget.attrs['class'] = 'form-control'
 	place = forms.CharField(max_length = '30', label = _("Event Location"))
+	place.widget.attrs['class'] = 'form-control'
 	send_similar = forms.BooleanField(label = _("Send to 5 similar Photographers"))
+	#send_similar.widget.attrs['class'] = 'form-control'
 	#target = forms.CharField(max_length = '5', label = _("Target(hidden)"))
-
+	def __init__(self,*args,**kwargs):
+		super(QuoteForm, self).__init__(*args, **kwargs)
+		#self.desc.widget.attrs['class'] = 'form-control'
+		#self.place.widget.attrs['class'] = 'form-control'
+		#self.send_similar.widget.attrs['class'] = 'form-control'
+	
 # this view serves the form.
 class QuoteRequestView(FormView):
-	template_name = 'quote/main.html'
+	template_name = 'quote/quote-request.html'	# use the quote-request.html template
 	
 	
 	# most of the following methods are overrides of FormView's methods when FormVIew attempts to dispatch the request,these functions will be called

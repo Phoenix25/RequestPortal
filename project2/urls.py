@@ -4,10 +4,10 @@ from django.views.generic.base import TemplateView
 from django.contrib import admin
 admin.autodiscover()
 
+
+# the main url pattern matcher.
+# use the namespace and name fields to reference a given view.
 urlpatterns = patterns('',
-    # Examples:
-    # url(r'^$', 'project2.views.home', name='home'),
-    # url(r'^blog/', include('blog.urls')),
 
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^query/', include('query.urls', namespace='query')),

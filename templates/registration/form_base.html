@@ -1,7 +1,11 @@
 <!-- This is a snippet transferred from the server to the client. The client is expected to push the native data to the main div-->
 
 <form action="" method="POST">
+<div class="form-group">
 {%csrf_token%}
 {{form.as_p}}
-<div class="quote-req-container"><button id="quote-req-button" value="POST REQUEST" onclick="post_quote_form()">POST REQUEST</button></div>
+
+</div>
 </form>
+
+<div class="quote-req-container"><button id="quote-req-button" value="POST REQUEST" onclick="post_quote_form()">POST REQUEST</button></div>

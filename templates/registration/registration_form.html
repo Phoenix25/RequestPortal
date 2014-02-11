@@ -1,9 +1,20 @@
-<!-- This is a snippet transferred from the server to the client. The client is expected to push the native data to the main div-->
+<!-- template page. edit this page to customize the look -->
+
+
+<!-- in case a fully custom look and feel is desired, make your own form without using form.as_p
+	The field 'names' that are to be sent to the server are as follows.
+	
+	username
+	email
+	password1
+	password2	# retype password.
+	
+	MAKE SURE THE HIDDEN FIELD 'group' is included. (since it's hidden. no big problem to look and feel of the site.)
+-->
 
 <form action="" method="POST">
 {%csrf_token%}
 {{form.as_p}}
 <input type="hidden" name="group" value="{{group}}"></input>
 <input type="submit"/>
-
 </form>

@@ -13,7 +13,8 @@
 
     <!-- Bootstrap core CSS -->
 	{%load staticfiles%}
-    <link href="../../static/query/dist/css/bootstrap.min.css" rel="stylesheet">
+    <link href="../../static/query/dist/css/bootstrap.css" rel="stylesheet">
+	<link href="../../static/query/dist/css/flat-ui.css" rel="stylesheet">
 	<script src="../../static/query/dist/js/jquery-1.10.2.min.js" type="text/javascript">
 	</script>
     <script src="../../static/query/dist/js/bootstrap.min.js" type="text/javascript"></script>
@@ -192,24 +193,11 @@
 		background-color: white;
 		border-color: white;
 	}
-	#bottom-nav{
-		margin-top: 50px;
-		margin-bottom: 50px;
-		margin-left:50px;
-	}
+	
 	.navbar-fixed-bottom{
 		height:20%
 	}
-	#top-nav{
-		margin-left:0px;
-		margin-right:0px;
-		width:100%;
-	}
-	#nav-list-top{
-		height:100%;
-		min-height:100%;
-		padding-top:7px;
-	}
+	
 	a{
 		color:black;
 	}
@@ -224,15 +212,13 @@
 	}
 	.back-col{
 		height:100%;
-		width:80%;
-		left:10%;
-		background-color:#CCC;
+		width:100%;
+		left:0%;
+		background-color:#AAA;
 		position:absolute;
 		z-index:0
 	}
-	.navbar-fixed-top{
-		height:8%
-	}
+	
 	.nav{
 		font-size: 2vh;
 	}
@@ -335,72 +321,42 @@
 	#record-container{
 		opacity:0;
 	}
+	.detail{
+		width:100%;
+		text-align:center;
+		height:5%;
+		font-size:2vh;
+		font-family: 'Lato';
+	}
+	.detail_type{
+		
+	}
+	.detail_desc{
+		
+	}
+	.detail_name{
+		
+	}
 	</style>
   </head>
 
   <body background="#EEE">
 	<!--<img src='img.jpg' style='width:100%;height:100%'/>-->
-    <div class="navbar navbar-inverse navbar-fixed-top navbar-color" role="navigation" style="height:10vh;z-index:2">
- 
-		<table style="width:100%">
-			<tr>
-				<td width="10%" style="height:4vh;"></td>
-				<td width="15%" style="height:4vh;text-align:center"><h1 style="font-size:4vh"><strong>hire</strong>fellas</h1></td>
-				<td width="28%" style="height:7vh;text-align:center"></td>
-				<td width="5%" style="height:7vh;text-align:center; " id="hiw" onclick="ajax_direct_dump('../../accounts/edit/',{},'GET','record-container')"><h3 style="font-size:1.2vh">PROFILE</h3></td>
-				<td width="5%" style="height:7vh;text-align:center; " id="hiw" onclick="ajax_direct_dump('../../quote/qlist',{},'GET','record-container')"><h3 style="font-size:1.2vh">QUOTES</h3></td>
-				<td width="5%" style="height:7vh;text-align:center; " id="hiw" onclick="ajax_direct_dump('../../quote/qrlist',{},'GET','record-container')"><h3 style="font-size:1.2vh">QUOTE REQS</h3></td>
-				<td width="5%" style="height:7vh;text-align:center; " id="hiw"><h3 style="font-size:1.2vh"><a href="../../accounts/register?group=1">REG-AS-PHOTOGRAPHER</a></h3></td>
-				<td width="5%" style="height:7vh;text-align:center; font-size:1.2vh" id="login" onclick=""><h3 style="font-size:1.2vh"><a href="../../accounts/login">LOGIN</a></h3></td>
-				<td width="17%" style="height:7vh;text-align:center"></td>
-			</tr>
-		</table>
-		
-    </div>
-    
-	<div class="back-col"></div>
-	<div class="context_selector">
-		<select id="filter-criteria-type">
-			<option value="volvo">Wedding Photographer</option>
-			<option value="saab">Event Photographer</option>
-		</select>
-		<div class = "leftbar-li" id="pgr_disp" style="height:4%" onclick="json_get_pgrdata(function(){show_pgr_list()},'Arkham')">
-			<table width="100%" height="100%">
-				<tr>
-					<td style="text-align:center;height:100%;width:100%">
-					<p style="font-size:1.8vh">
-						Display Photographers
-					</p>
-					</td>
-				</tr>
-			</table>
+	<div class="container">
+		<div class="row">
+			<nav class="navbar navbar-fixed-top" role="navigation">
+				<ul class="nav navbar-nav navbar-right">           
+					<li><a href="#fakelink">Menu Item<span class="navbar-unread">2</span></a></li>
+					<li><a href="#fakelink">About Us</a></li>
+				</ul>
+			</nav>
+			
+			<div class="col-xs-8 col-xs-offset-2">
+				HELLO
+			</div>
 		</div>
-	</div>
-	<div class="records-container" id="record-container">
-		
-		<!--<div class="record" style="background-color:#aac"></div>
-		<div class="record" style="background-color:#afa"></div>
-		<div class="record" style="background-color:#aac"></div>
-		<div class="record" style="background-color:#afa"></div>
-		<div class="record" style="background-color:#aac"></div>
-		<div class="record" style="background-color:#afa"></div>
-		<div class="record" style="background-color:#aac"></div>-->
-		<!--<div class="record" style="background-color:#aac"><div class="record-inner-name-container"><div class="record-inner-name">EZIO</div></div><div class="record-inner-text-container"><div class="record-inner-text">EZIO</div></div></div>-->
-	</div>
-	<div class="records-container load_screen" id="load-container">
-		<table width="100%" height="100%">
-			<tr  width="100%" height="100%">
-				<td width="100%" height="100%">
-					<p style="font-size:6vh;font-family:'Impact';text-align:center">
-						LOADING...
-					</p>
-				</td>
-			</tr>
-		</table>
-	</div>
-    <!-- /.container -->
-	<div class="left-hidebar"></div>
-	<div class="right-hidebar"></div>
+    </div>
+	<div class="back-col"></div>
 
     <!-- Bootstrap core JavaScript
     ================================================== -->

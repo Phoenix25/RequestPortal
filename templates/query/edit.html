@@ -1,6 +1,15 @@
+<!-- the form for editing user's account. -->
+<!--
+	in case a fully custom look and feel is desired, make your own form without using form.as_p
+	The field 'names' that are to be sent to the server vary with situation. consult accounts/views.py:show_profile
+	for details on which fields to include for which situation.
+	
+-->
 <form id="user-data" action="" method="POST">
 {%csrf_token%}
 {{form.as_p}}
 
 </form>
+<!-- the following javascript button is for AJAX. Comment it out if you're going for standard transitions. -->
+<!-- link to /accounts/edit/   method=POST as an alternative -->
 <div class="submit-container"><button id="submit-button" value="CHANGE" onclick="ajax_post_and_dump('user-data','../../accounts/edit/','POST','record-container')">POST REQUEST</button></div>
