@@ -51,12 +51,7 @@ urlpatterns = patterns('',
                            views.show_profile,
                            name='edit'),
 						
-						# ignore the following commented text.
-						"""url(r'^edit_user/$',
-                           UserAccountEditView.as_view(template_name='registration/form_base.html'),	
-                           name='edit_user'),"""
-						  
-						# present account details for photographer
+						
 						url(r'^detail_pgr/$',
                            PGRAccountDetailView.as_view(template_name='detail.html'),
                            name='detail_pgr'),
