@@ -1,0 +1,7 @@
+<form id="user-data" action="" method="POST" enctype="multipart/form-data">
+{%csrf_token%}
+
+<img src="{{form.instance.avatar.url}}" style="width:200px"></img>
+<input name="file" type=file multiple></input>
+<input type=submit></input>
+</form>

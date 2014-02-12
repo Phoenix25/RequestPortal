@@ -31,3 +31,6 @@ class DetailForm(forms.Form):
 	
 		return self.cleaned_data
 	
+
+class UploadForm(forms.Form):
+	file = forms.FileField()

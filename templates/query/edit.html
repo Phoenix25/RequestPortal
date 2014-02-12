@@ -7,9 +7,11 @@
 -->
 <form id="user-data" action="" method="POST">
 {%csrf_token%}
-{{form.as_p}}
 
+<img src="{{form.instance.avatar.url}}" style="width:200px"></img>
+{{form.as_p}}
 </form>
+
 <!-- the following javascript button is for AJAX. Comment it out if you're going for standard transitions. -->
 <!-- link to /accounts/edit/   method=POST as an alternative -->
 <div class="submit-container"><button id="submit-button" value="CHANGE" onclick="ajax_post_and_dump('user-data','../../accounts/edit/','POST','record-container')">POST REQUEST</button></div>

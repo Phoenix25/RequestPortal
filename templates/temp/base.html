@@ -1,0 +1,366 @@
+
+<!DOCTYPE html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta http-equiv="X-UA-Compatible" content="IE=edge">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <meta name="description" content="">
+    <meta name="author" content="">
+    <link rel="shortcut icon" href="../../assets/ico/favicon.ico">
+
+    <title>Starter Template for Bootstrap</title>
+
+    <!-- Bootstrap core CSS -->
+	{%load staticfiles%}
+    <link href="../../static/query/dist/css/bootstrap.css" rel="stylesheet">
+	<link href="../../static/query/dist/css/flat-ui.css" rel="stylesheet">
+	<script src="../../static/query/dist/js/jquery-1.10.2.min.js" type="text/javascript">
+	</script>
+    <script src="../../static/query/dist/js/bootstrap.min.js" type="text/javascript"></script>
+	<script type="text/javascript">
+		var global_pgrdata = new Array();
+		var global_pgr_get_status = 0;
+		/*function pgr_data(name,type,pk,desc){
+				this.name = name;
+				this.type = type;
+				this.pk = pk;
+				this.desc = desc;
+		}*/
+		// JSON Objects to HTML; utility functions
+		function pgr_to_html(rec){
+			return '<div class="record" style="background-color:#aac" onclick="show_pgr_data('+rec.pk+')"><div class="record-inner-name-container"><div class="record-inner-name">'+rec.name+'</div></div><div class="record-inner-text-container"><div class="record-inner-text">'+rec.desc+'</div></div></div>';
+		}
+		function quote_to_html(rec){
+			return '<div class="record" style="background-color:#aac"><div class="record-inner-name-container"><div class="record-inner-name">'+rec.name+'</div></div><div class="record-inner-text-container"><div class="record-inner-text">'+rec.desc+'</div></div></div>';
+		}
+		//----------------------------------------
+		function plug_html(_html){
+			//var _html = '<div class="record" style="background-color:#aac" onclick="show_pgr_data('+rec.pk+')"><div class="record-inner-name-container"><div class="record-inner-name">'+rec.name+'</div></div><div class="record-inner-text-container"><div class="record-inner-text">'+rec.desc+'</div></div></div>';
+			$("#record-container").append(_html);
+		}
+		function attach_animation_handlers(){
+			$(".record").hover(function(){
+					$(this).animate({"opacity":"1"},200)
+			},function(){
+					$(this).animate({"opacity":"0.5"},200)
+			});
+			$(".leftbar-li").hover(function(){
+					$(this).animate({"opacity":"1"},200)
+			},function(){
+					$(this).animate({"opacity":"0.3"},200)
+			});
+		}
+		
+		// AJAX functions
+		// This function is used to directly dump incoming HTML from a remote source. It's used for all get operations except while showing the PGR list to the user.
+		function ajax_direct_dump(url,data,type,container){
+			swap_to_load_screen(function(){
+				$.ajax({
+				type: type,
+				url: url,
+				data: data,
+				success: function(data, statusCode, XHR){
+					document.getElementById(container).innerHTML = data;
+					swap_to_container();
+				},
+				error: function(data, statusCode, XHR){
+					document.getElementById(container).innerHTML = data;
+					swap_to_container();
+				}
+				});
+			});
+		}
+		// This function is used to post the contents of a given form and then dump the incoming html into the specified container
+		function ajax_post_and_dump(form,url,type,container){
+			swap_to_load_screen(function(){
+				$.ajax({
+				type: type,
+				url: url,
+				data: $('#'+form).serialize(),
+				success: function(data, statusCode, XHR){
+					document.getElementById(container).innerHTML = data;
+					swap_to_container();
+				},
+				error: function(data, statusCode, XHR){
+					document.getElementById(container).innerHTML = data;
+					swap_to_container();
+				}
+				});
+			});
+		}
+		function show_pgr_data(pk){
+			ajax_direct_dump("../../accounts/detail_pgr/",{pk:pk},"GET","record-container")
+		}
+		function show_pgr_list(){
+			swap_to_load_screen(function(){
+				var i=0;
+				document.getElementById("record-container").innerHTML = "";
+				for(i=0;i<global_pgrdata.length;i++){
+					//alert(global_pgrdata[i].first_name);
+					plug_html(pgr_to_html(global_pgrdata[i]));
+				}
+				attach_animation_handlers();
+				swap_to_container();
+			});
+		}
+		
+		function get_quote_form(pk){
+			/*$.ajax({
+				type: "GET",
+				url: "../../quote/quote/",
+				data: { target: pk },
+				success: function(data, statusCode, XHR){
+					document.getElementById("record-container").innerHTML = data;
+					swap_to_container();
+				}
+			});*/
+			ajax_direct_dump("../../quote/quote/",{target:pk},"GET","record-container");
+		}
+		function post_quote_form(pk){
+			/*$.ajax({
+				type: "GET",
+				url: "../../quote/quote/",
+				data: $("#quote_form").serialize(),
+				success: function(data, statusCode, XHR){
+					document.getElementById("record-container").innerHTML = data;
+					swap_to_container();
+				}
+			});*/
+			// TODO check possible user session loss.
+			ajax_direct_dump("../../quote/quote/?target="+pk,$("#quote_form").serialize(),"POST","record-container");
+		}
+		
+		function swap_to_load_screen(func0){
+			$("#load-container").animate({"opacity":"1"},200);
+			$("#record-container").animate({"opacity":"0"},200,'linear',function(){func0();});
+			$("#load-container").css("z-index","1");
+			$("#record-container").css("z-index","0");
+		}
+		
+		function swap_to_container(){
+			$("#load-container").animate({"opacity":"0"},200);
+			$("#record-container").animate({"opacity":"1"},200);
+			$("#load-container").css("z-index","0");
+			$("#record-container").css("z-index","1");
+		}
+		function json_get_pgrdata(func0,city){
+			$.ajax({
+				type: "GET",
+				url: "../query/",
+				data: { city: city },
+				success: function(data, statusCode, XHR){
+					
+					global_pgrdata = data;
+					global_pgr_get_status = 1;
+					func0();
+				}
+			});
+		}
+		$(document).ready(function(){
+			swap_to_load_screen(function(){});
+			//rec0 = new pgr_data("Ezio","Auditore","1","One of the greatest assassins of all time");
+			//plug_record(rec0);
+			
+			json_get_pgrdata(function(){show_pgr_list()},"Arkham");
+			
+		});
+		
+		
+	</script>
+    <!-- Custom styles for this template -->
+    <!--<link href="starter-template.css" rel="stylesheet">-->
+
+    <!-- Just for debugging purposes. Don't actually copy this line! -->
+    <!--[if lt IE 9]><script src="../../assets/js/ie8-responsive-file-warning.js"></script>
+	<![endif]-->
+
+    <!-- HTML5 shim and Respond.js IE8 support of HTML5 elements and media queries -->
+    <!--[if lt IE 9]>
+      <script src="https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js"></script>
+      <script src="https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js"></script>
+    <![endif]-->
+	<style type="text/css">
+		
+	body {
+		padding-top: 50px;
+	}
+	.starter-template {
+		padding: 40px 15px;
+		text-align: center;
+	}
+	.navbar-color {
+		background-color: white;
+		border-color: white;
+	}
+	
+	.navbar-fixed-bottom{
+		height:20%
+	}
+	
+	a{
+		color:black;
+	}
+	.context_selector{
+		height:100%;
+		width:15%;
+		top:10%;
+		left:10%;
+		background-color:black;
+		position:absolute;
+		z-index:1
+	}
+	.back-col{
+		height:100%;
+		width:100%;
+		left:0%;
+		background-color:#AAA;
+		position:absolute;
+		z-index:0
+	}
+	
+	.nav{
+		font-size: 2vh;
+	}
+	ul li{
+		height:50px;
+		line-height:5em;
+		position:absolute
+	}
+	.nav-display-item{
+		height:100px;
+		width:50px;
+		background-color:#999;
+		color:white;
+		position:absolute;
+	}
+	.records-container{
+		height:90%;
+		width:65%;
+		left:25%;
+		top:10%;
+		position:absolute;
+	}
+	.record{
+		opacity:0.5;
+		height:16.6%;
+		width:100%;
+		position:relative;
+	}
+	.record-inner-name{
+		
+		height:70%;
+		top:30%;
+		position:absolute;
+		text-align:center;
+		padding-right:20px;
+		padding-left:2px;
+		border-color:#222;
+		width:100%;
+		font-size:3vh;
+		font-family: 'Helvetica Bold'
+	}
+	.record-inner-name-container{
+		opacity:0.4;
+		background-color:#ccc;
+		position:absolute;
+		width:15%;
+		height:100%
+	}
+	.record-inner-text-container{
+		opacity:0.4;
+		background-color:#ccc;
+		position:absolute;
+		width:75%;
+		left:20%;
+		height:100%
+	}
+	.record-inner-text{
+		height:80%;
+		top:10%;
+		position:absolute;
+		text-align:left;
+		padding-right:10px;
+		padding-left:10px;
+		border-color:#222;
+		width:100%;
+		font-size:2vh;
+		font-family: 'Helvetica';
+		font-color: #ccc;
+	}
+	.load_screen{
+		z-index:0;
+		opacity:1;
+	}
+	.left-hidebar{
+		position:absolute;
+		z-index:5;
+		left:0%;
+		top:0%;
+		height:100%;
+		width:10%;
+		background-color:#DDD;
+	}
+	.right-hidebar{
+		position:absolute;
+		z-index:5;
+		left:90%;
+		top:0%;
+		height:100%;
+		width:10%;
+		background-color:#DDD;
+	}
+	.leftbar-li{
+		width:100%;
+		background-color:green;
+		opacity:0.3;
+		position:relative;
+		text-align: center;
+		font-size:2vh;
+	}
+	#record-container{
+		opacity:0;
+	}
+	.detail{
+		width:100%;
+		text-align:center;
+		height:5%;
+		font-size:2vh;
+		font-family: 'Lato';
+	}
+	.detail_type{
+		
+	}
+	.detail_desc{
+		
+	}
+	.detail_name{
+		
+	}
+	</style>
+  </head>
+
+  <body background="#EEE">
+	<!--<img src='img.jpg' style='width:100%;height:100%'/>-->
+	<div class="container">
+		<div class="row">
+			<nav class="navbar navbar-fixed-top" role="navigation">
+				<ul class="nav navbar-nav navbar-right">           
+					<li><a href="#fakelink">Menu Item<span class="navbar-unread">2</span></a></li>
+					<li><a href="#fakelink">About Us</a></li>
+				</ul>
+			</nav>
+			
+			<div class="col-xs-8 col-xs-offset-2">
+				HELLO
+			</div>
+		</div>
+    </div>
+	<div class="back-col"></div>
+
+    <!-- Bootstrap core JavaScript
+    ================================================== -->
+    <!-- Placed at the end of the document so the pages load faster -->
+    
+  </body>
+</html>

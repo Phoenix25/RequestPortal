@@ -1,16 +1,16 @@
 from django.shortcuts import render
-from django.views.generic.edit import UpdateView
+from django.views.generic.edit import UpdateView,CreateView
 from django.views.generic.detail import DetailView
-
+from django.views.generic.list import ListView
 from registration.backends.simple.views import RegistrationView
-from accounts.forms import DetailForm
-from query.models import PGRData
+from accounts.forms import DetailForm, UploadForm
+from query.models import PGRData,Document
 from accounts.models import UserData
 from django.core.exceptions import PermissionDenied,ValidationError
 from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User,Group
-from django.http import HttpResponse
-
+from django.http import HttpResponse, HttpResponseRedirect
+import re
 # Create your models here.
 
 permission_lists = {'test':['pybb.add_post','pybb.view_post']}
@@ -45,7 +45,7 @@ class AccountRegistrationView(RegistrationView):
 class PGRAccountEditView(UpdateView):
 	model = PGRData
 
-	fields = ['name','type','city','desc']
+	fields = ['name','type','city','desc','avatar']
 	template_name = "query/edit.html"
 	
 	def dispatch(self, request, *args, **kwargs):
@@ -90,7 +90,7 @@ class UserAccountDetailView(DetailView):
 	def get_object(self):
 		obj = UserData.objects.filter(user = self.request.user)[0]
 		return obj
-	
+
 class UserAccountEditView(UpdateView):
 
 	model = UserData
@@ -115,3 +115,41 @@ class UserAccountEditView(UpdateView):
 	def get_success_url(self):
 		return reverse("query:base")
 		
+
+class UploadView(CreateView):
+	model = Document
+	template_name = "query/upload.html"
+	
+def upload(request):
+	
+	if request.method == 'POST':
+	
+		for file in request.FILES.getlist('file'):
+		
+			if not request.user.is_authenticated():
+				return HttpResponseRedirect(reverse("accounts:auth_login"))
+			import pdb;pdb.set_trace()
+			doc0 = Document()
+			doc0.pgr = request.user
+			doc0.doc = file
+			doc0.save()
+		
+		return HttpResponse("BLAH")
+	else:
+		return render(request,"query/upload.html",{'form':UploadForm(request.GET)})
+	
+class UploadLists(ListView):
+	model = Document
+	template_name = "query/portfolio.html"
+	
+	def get_queryset(self):
+		#pgr_target = PGRData.objects.filter(user = User.objects.filter(pk=self.request.GET['pk'])[0])
+		documents = Document.objects.filter(pgr = User.objects.filter(pk=self.request.GET['pk'])[0])
+		res = []
+		exp = re.compile(r"^.*\.(.*)$")
+		for i in documents:
+			if exp.match(i.doc.url).groups()[0] in ["png","jpg","gif"]:
+				res.append(i)
+				
+		return res
+	

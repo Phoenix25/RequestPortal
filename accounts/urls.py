@@ -24,7 +24,7 @@ from django.views.generic.base import TemplateView
 
 #from accounts.views import AccountActivationView as ActivationView
 from accounts.views import AccountRegistrationView as RegistrationView
-from accounts.views import PGRAccountEditView, UserAccountEditView, PGRAccountDetailView, UserAccountDetailView
+from accounts.views import PGRAccountEditView, UserAccountEditView, PGRAccountDetailView, UserAccountDetailView, UploadView, UploadLists
 from accounts import views
 urlpatterns = patterns('',
 						# the following 4 views are by registration module for handling activation and registration
@@ -60,7 +60,14 @@ urlpatterns = patterns('',
 						url(r'^detail_user/$',
                            UserAccountDetailView.as_view(template_name='detail.html'),
                            name='detail_user'),
+						
+						url(r'^upload/$',
+                           views.upload,
+                           name='upload'),
 						   
+						url(r'^upload-list/$',
+                           UploadLists.as_view(),
+                           name='portfoliolist'),
                        )
                        
 						

@@ -1,0 +1,10 @@
+<!-- sample test page for displaying lists of images. Modify as necessary-->
+
+<!-- use i.doc.url to access a single image -->
+<div id="portfolio">
+	{%for i in object_list%}
+		<div class="img-container">
+			<img src="{{i.doc.url}}" style = "height:200px"></img>
+		</div>
+	{%endfor%}
+</div> 
