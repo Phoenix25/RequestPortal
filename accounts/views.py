@@ -119,22 +119,35 @@ class UserAccountEditView(UpdateView):
 class UploadView(CreateView):
 	model = Document
 	template_name = "query/upload.html"
-	
+
 def upload(request):
 	
-	if request.method == 'POST':
-	
-		for file in request.FILES.getlist('file'):
+	if not request.user.is_authenticated():
+		return HttpResponseRedirect(reverse("accounts:auth_login"))
 		
-			if not request.user.is_authenticated():
-				return HttpResponseRedirect(reverse("accounts:auth_login"))
-			import pdb;pdb.set_trace()
+	if request.method == 'POST':
+		exp = re.compile(r"^.*\.(.*)$")
+		
+		# get current index of the user.
+		curr_documents = Document.objects.filter(pgr = request.user)
+		curr_index = 0
+		if curr_documents.count() > 0:
+			curr_index = curr_documents.order_by('index')[curr_documents.count()-1].index
+		
+		for file in request.FILES.getlist('file'):
+			
 			doc0 = Document()
 			doc0.pgr = request.user
 			doc0.doc = file
+			#import pdb;pdb.set_trace()
+			if exp.match(doc0.doc.url).groups()[0] in ["png","jpg","gif"]:
+				doc0.visible = 'true';
+			else:
+				doc0.visible = 'false';
+			doc0.index = curr_index+1;
 			doc0.save()
 		
-		return HttpResponse("BLAH")
+		return HttpResponse("Success")
 	else:
 		return render(request,"query/upload.html",{'form':UploadForm(request.GET)})
 	
@@ -147,7 +160,7 @@ class UploadLists(ListView):
 		documents = Document.objects.filter(pgr = User.objects.filter(pk=self.request.GET['pk'])[0])
 		res = []
 		exp = re.compile(r"^.*\.(.*)$")
-		for i in documents:
+		for i in documents.order_by('index'):
 			if exp.match(i.doc.url).groups()[0] in ["png","jpg","gif"]:
 				res.append(i)
 				

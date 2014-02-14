@@ -46,7 +46,8 @@ INSTALLED_APPS = (
 	'query',
 	'quote',
 	'registration',
-	'accounts'
+	'accounts',
+	'review'
 )
 
 MIDDLEWARE_CLASSES = (

@@ -1,0 +1,7 @@
+<form id="user-data" action="" method="POST">
+{%csrf_token%}
+<input type = 'text' name='rating'></input>
+<input type = 'text' name = 'desc'></input>
+<input type = 'hidden' name='pk' value = '{{token}}'></input>
+<input type=submit></input>
+</form>

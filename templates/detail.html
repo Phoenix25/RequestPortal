@@ -3,6 +3,7 @@
 	'object' is the record conatining 'type', 'desc' and 'name' fields 
 -->
 
+{%load url from future%}
 <div class="detail_header">
 	Photographer Profile
 </div>
@@ -13,3 +14,4 @@
 <!-- the following javascript button is for AJAX. Comment it out if you're going for standard transitions. -->
 <!-- link to /quote/quote/ with GET data: pk = {{object.pk}} as an alternative -->
 <div class="quote-req-container"><div id="quote-req-button" class="btn btn-lg btn-success" value="GET QUOTE" onclick="get_quote_form({{object.pk}})">GET QUOTE</div></div>
+<a href="{url 'accounts:porfolio'}?pk={{object.pk}}">View Portfolio</a>
