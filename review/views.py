@@ -4,6 +4,7 @@ from django.views.generic.edit import CreateView
 from review.models import Review,ReviewToken
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
+from django.contrib.auth.models import User
 # Create your views here.
 
 class ReviewTokenList(ListView):
@@ -11,7 +12,18 @@ class ReviewTokenList(ListView):
 	template_name = "review/tokenlist.html"
 	def get_queryset(self):
 		qs = super(ReviewTokenList, self).get_queryset()
-		qs = qs.filter(source = self.request.user, active = 1)
+		qs = qs.filter(user = self.request.user, active = 1)
+		return qs
+
+# public review list as seen by others under a photographer's page.
+class ReviewListView(ListView):
+	model = Review
+	template_name = "review/reviewlist.html"
+	context_object_name = "review_list"
+	def get_queryset(self):	
+		qs = super(ReviewListView, self).get_queryset()
+		qs = qs.filter(pgr = User.objects.filter(pk = self.request.GET['pk'])[0])
+		#import pdb;pdb.set_trace()
 		return qs
 
 class ReviewView(CreateView):
@@ -38,3 +50,13 @@ class ReviewView(CreateView):
 		ctx = super(ReviewView, self).get_context_data(**kwargs)
 		ctx['token'] = self.request.GET['token']
 		return ctx
+
+def get_user_rating(user):
+	reviews = Review.objects.filter(pgr = user)
+	rating = 0
+	for review in reviews:
+		rating += int(review.rating)
+		if not reviews.count == 0:
+			return float(rating)/float(reviews.count())
+		else:
+			return -1

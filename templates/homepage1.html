@@ -1,0 +1,245 @@
+{% load url from future %}
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>New Project Template</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+
+    <!-- Loading Bootstrap -->
+    <link href="../../static/query/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="../../static/query/dist/css/prettify.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="../../static/query/dist/css/flat-ui.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    
+    <!--styles-->
+    <style>
+	html,body {
+		height:100%;
+		min-width:1366px;
+		}
+		
+	/*header*/
+	#header {
+		background:rgb(118,199,192);
+		}
+		
+	#header .title {
+		color:#fff;
+		margin-top:20px;
+		}
+	
+	#header .pull-right {
+		margin:5px 70px;
+		}
+		
+	#header .row {
+		margin-right:0;
+		}	
+		
+	#header .but>* {
+		padding:10px;
+		width:100px;
+		}
+		
+	#header .but>*>* {
+		width:80px;
+		}
+		
+	/*#main container*/
+	#main {
+		background:rgb(189,195,199);
+		margin:0;
+		width:100%;
+		height:578.7px;/*90%*/
+		}
+    #main #modal0 {
+		position:relative;
+		width:430px;
+		height:110px;
+		border-radius:5px;
+		background:rgb(226,83,75);
+		left:800px;
+		top:60px;
+		padding:10px;
+		}		
+	#main #modal {
+		position:relative;
+		background:rgb(226,83,75);
+		padding:5px 5px 5px 15px;
+		width:100%;
+		top:280px;
+		height:150px;
+		line-height:25px;
+		}
+		
+	.hire-content {
+		position:absolute;
+		left:503px;/*36.8%*/
+		width:360px;
+		height:120px;
+		margin:10px auto;
+		}
+		
+	#main #modal .col-md-12,.col-md-8,.col-md-4 {
+		padding-top:6px;
+		}
+	
+	/*container 2*/
+	#main2 {
+		background:#fff;
+		margin:0;
+		height:578.7px;/*90%*/
+		}
+	
+	
+	
+	/*footer*/
+	.bold {
+		font-weight:bolder;
+		}
+	
+	.fff {
+		color:#fff;
+		}
+		
+	footer {
+		background:rgb(118,199,192);
+		}	
+		
+	.foothead {
+		color:rgb(72,124,119);
+		}
+		
+	footer .row>* {
+		margin-bottom:50px;
+		}
+		
+	.foot2 {
+		height:50px;
+		background:rgb(106,179,172);
+		}
+		
+	.foot2 .hire {
+		padding:10px 0;
+		}
+		
+	footer a {
+		color:#fff;
+		}
+	</style>
+</head>
+
+<body>
+<!--header-->
+    <header>
+       <div id="header">
+          <div class="row">
+             <div class="title col-md-2 col-xs-2 col-xs-offset-1 col-md-offset-1">
+                <span class="h4"><span class="bold">hire</span>fellas</span>
+             </div>
+             <div class="but col-md-5 col-xs-5 pull-right">
+              <div class="col-md-3 col-xs-3">
+                <a href="#" class="btn btn-block btn-primary">HOME</a>
+              </div>
+              <div class="col-md-3 col-xs-3" style="width:170px;">
+                <a href="#" class="btn btn-block btn-primary" style="width:150px;">HOW IT WORKS</a>
+              </div> 
+              <div class="col-md-3 col-xs-3">
+                <a href="#" class="btn btn-block btn-primary">ABOUT</a>
+              </div>
+              <div class="col-md-3 col-xs-3">
+                <a href="#" class="btn btn-block btn-primary">LOGIN</a>
+              </div>  
+             </div>       
+          </div>
+       </div>
+    </header>
+
+<!--container-->
+    <div id="main">
+       <div id="modal0">
+        <span class="h3 fff">CAPTURE YOUR PRECIOUS MOMENTS</span>
+       </div>
+	   <form action="{% url 'query:base'%}" method="GET">
+       <div id="modal">
+         <div class="hire-content">
+          <span class="h2" style="color:#fff;">HIRE</span>
+          <i style="position:absolute;top:3px;padding-left:3px;">the best photographer to capture your happy moments</i><br>
+          <div class="col-md-8 col-xs-8" style="margin-left:-10px;">
+            <input class="form-control" name="city" type="text" placeholder="Location" value=""/>
+          </div>
+          <div class="col-md-4 col-xs-4">
+            <a href="#" class="btn btn-block btn-md btn-primary">Search</a>
+          </div>
+         </div>
+       </div>
+	   </form>
+    </div>
+<!--container 2-->
+    <div id="main2">
+       
+    
+
+
+    </div>
+<!--footer-->
+     <footer>
+      <div class="foot container">
+        <div class="row">
+          <div class="col-md-4 fff">
+            <h3 class="footer-title"><span class="bold">hire</span>fellas</h3>
+            <p style="text-align:justify">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+            <span>Phone : +91-9999999999</span><br>
+            <span>email : dummy@gmail.com</span>
+          </div> 
+
+          <div class="col-md-2 fff">
+             <h3 class="footer-title foothead">Company</h3>
+             <ul>
+                <li><a href="#">About</a></li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Testimonals</a></li>
+             </ul>
+          </div>
+          <div class="col-md-2 fff">
+             <h3 class="footer-title foothead">Community</h3>
+             <ul>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Forum</a></li>
+                <li><a href="#">Support</a></li>
+                <li><a href="#">Newsletter</a></li>
+             </ul>
+          </div>
+          <div class="col-md-4 fff">
+             <h3 class="footer-title"><i>from the</i> <span class="bold">BLOG</span></h3>
+          
+          </div>
+        </div>
+      </div>
+    </footer>
+    <div class="foot2 fff">
+     <div class="col-md-2 col-md-offset-1 hire">
+      <span>2014 HireFellas</span>
+     </div>
+    </div>
+    
+    <!-- Load JS here for greater good =============================-->
+    <script src="../../static/query/dist/js/jquery-1.10.2.min.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-select.js"></script>
+    <script src="js/bootstrap-switch.js"></script>
+    <script src="js/flatui-checkbox.js"></script>
+    <script src="js/flatui-radio.js"></script>
+    <script src="js/jquery.tagsinput.js"></script>
+    <script src="js/jquery.placeholder.js"></script>
+</body>
+</html>

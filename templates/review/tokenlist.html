@@ -1,0 +1,13 @@
+<div class="detail_header">
+	Reviews
+</div>
+{% for object in object_list %}
+<div class="quote_item" onclick="">
+<div class="detail_type">Customer: {{object.user.username}}</div>
+<div class="detail_desc">Photographer: {{object.pgr.username}}</div>
+<!--<div class="detail_name">Review: {{object.desc}}</div>
+<div class="detail_name">Rating: {{object.rating}}</div>-->
+<a href="../../review/review/?token={{object.pk}}"> REVIEW </a>
+<div class="quote-req-container"><button id="quote-req-button" value="REVIEW" onclick="ajax_direct_dump('../../quote/qdetails/',{id:{{object.pk}}},'GET','record-container')">See Details</div>
+</div>
+{%endfor%}

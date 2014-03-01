@@ -4,8 +4,8 @@ from django.contrib.auth.models import User
 # Create your models here.
 
 type_choices = (
-('1','Wedding Photographer'),
-('2','Event Photographer')
+('Wedding','Wedding Photographer'),
+('Event','Event Photographer')
 # more types to come.
 )
 

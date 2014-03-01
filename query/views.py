@@ -2,7 +2,16 @@ from django.shortcuts import render
 from query.models import PGRData
 from django.http import HttpResponse
 from django.core.urlresolvers import reverse
+from review.views import get_user_rating as get_rating
+from django.views.generic.base import TemplateView
 import json
+
+
+class CityTemplateView(TemplateView):
+	def get_context_data(self):
+		ctx = super(CityTemplateView, self).get_context_data()
+		ctx['city'] = self.request.GET['city']
+		return ctx
 
 # implement a validation mechanism
 def validate_city(city):
@@ -20,7 +29,7 @@ def city_pgr_fail(request, error):
 def to_json(lst):
 	res = []
 	for i in lst:
-		dict0 = {"name":i.name,"city":i.city,"type":i.type,"pk":i.user.pk,"desc":i.desc}
+		dict0 = {"name":i.name,"city":i.city,"type":i.type,"pk":i.user.pk,"desc":i.desc,"rating":get_rating(i.user),"avatar":i.avatar.url}
 		res.append(dict0)
 	return res
 	

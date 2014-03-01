@@ -14,6 +14,6 @@ urlpatterns = patterns('',
 	url(r'^query/', include('query.urls', namespace='query')),
 	url(r'^quote/', include('quote.urls', namespace='quote')),
 	url(r'^accounts/', include('accounts.urls', namespace='accounts')),
-	url(r'^index/', TemplateView.as_view(template_name="index_template.html"), name="index"),
+	url(r'^$', TemplateView.as_view(template_name="homepage1.html"), name="index"),
 	url(r'^review/', include('review.urls', namespace='review')),
 )+ static(settings.MEDIA_URL, document_root="")

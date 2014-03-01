@@ -1,0 +1,514 @@
+{% load url from future %}
+
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Loading Bootstrap -->
+    <link href="../../static/query/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="../../static/query/dist/css/prettify.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="../../static/query/dist/css/flat-ui.css" rel="stylesheet">
+    <link href="../../static/query/dist/css/docs.css" rel="stylesheet">
+    
+    <script type="text/javascript">
+		var global_raw_data = new Array();
+		var global_filtered_data;
+		var global_sorted_data;
+		var global_paginated_data;
+		var global_pgr_get_status = 0;
+		var curr_page = 1;
+		
+		var PAGINATION_ROW_COUNT = 1;
+		var PAGINATION_COL_COUNT = 2;
+		
+		var cities = new Array();
+		var types = new Array();
+	</script>
+    <!--styles-->
+    <style>
+	html,body {
+		height:100%;
+		min-width:1366px;
+		}
+		
+	/*header*/
+	#header {
+		background:rgb(118,199,192);
+		}
+		
+	#header .title {
+		color:#fff;
+		margin-top:20px;
+		}
+	
+	#header .pull-right {
+		margin:5px 70px;
+		}
+		
+	#header .row {
+		margin-right:0;
+		}	
+		
+	#header .but>* {
+		padding:10px;
+		width:100px;
+		}
+		
+	#header .but>*>* {
+		width:80px;
+		}
+		
+	/*main container*/
+	#main {
+		height:1100px;/*86.07%*/
+		margin:10px 150px;
+		}
+		
+	#main .sort {
+		width:100%;
+		height:50px;
+		border-radius:5px;
+		background:#ccc;
+		margin-bottom:8px;
+		}	
+		
+	#main .profile,.profile-content {
+		float:left;
+		height:85%;
+		}
+    .profile {
+		background:rgb(189,195,199);
+		width:30%;
+		border-radius:5px;
+		padding:5% 1.83%;/*100px 25px 50px*/
+		}
+	.profile-content {
+		background:rgb(243,243,243);
+		width:70%;
+		}
+		
+	.profile-content>* {
+		margin-bottom:15px;
+		}
+		
+	.profile #user {
+		display:block;
+		width:140px;
+		height:140px;
+		-webkit-border-radius:140px;
+	    margin:40px auto 30px;
+		border:2px solid #000;
+		}
+	#name {
+		color:#000;
+		}
+
+	/*footer*/
+	.bold {
+		font-weight:bolder;
+		}
+	
+	.fff {
+		color:#fff;
+		}
+		
+	footer {
+		background:rgb(118,199,192);
+		}	
+		
+	.foothead {
+		color:rgb(72,124,119);
+		}
+		
+	footer .row>* {
+		margin-bottom:50px;
+		}
+		
+	.foot2 {
+		height:50px;
+		background:rgb(106,179,172);
+		}
+		
+	.foot2 .hire {
+		padding:10px 0;
+		}
+		
+	footer a {
+		color:#fff;
+		}
+				
+	@media screen and (min-width:320px) and (max-width:480px){
+		.profile {
+			width:35%;
+			}
+		.profile-content {
+			width:65%;
+			}
+		
+		}
+	</style>
+</head>
+
+<body>
+<!--header-->
+    <header>
+       <div id="header">
+          <div class="row">
+             <div class="title col-md-2 col-xs-2 col-xs-offset-1 col-md-offset-1">
+                <span class="h4"><span class="bold">hire</span>fellas</span>
+             </div>
+             <div class="but col-md-5 col-xs-5 pull-right">
+              <div class="col-md-3 col-xs-3">
+                <a href="{% url 'index'%}" class="btn btn-block btn-primary">HOME</a>
+              </div>
+              <div class="col-md-3 col-xs-3" style="width:170px;">
+                <a href="#" class="btn btn-block btn-primary" style="width:150px;">HOW IT WORKS</a>
+              </div> 
+              <div class="col-md-3 col-xs-3">
+                <a href="#" class="btn btn-block btn-primary">ABOUT</a>
+              </div>
+              <div class="col-md-3 col-xs-3">
+                <a href="#" class="btn btn-block btn-primary">LOGIN</a>
+              </div>  
+             </div>       
+          </div>
+       </div>
+    </header>
+    
+<!--container-->
+    <div id="main">
+      <div class="sort">
+      
+      
+      </div>
+      <div class="profile">
+         <p>LOCATION:</p>
+        <div id = 'city-tag'>
+         <input name="tagsinput" id = 'city' class="tagsinput" value="{{city}}"/>
+        </div>
+         <p>PHOTOGRAPHER TYPE:</p>
+        <div id='type-tag'>
+         <input name="tagsinput" id = 'type' class="tagsinput" value="Wedding,Event,Fashion,General,Food" />
+        </div>
+      </div>
+      <div class="profile-content">
+		<div class="profile-content-data">
+         <div class="col-xs-4 col-md-4">
+            <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="..." src="thumbnail.png">
+            </a>
+         </div>
+         <div class="col-xs-4 col-md-4">
+            <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="..." src="thumbnail.png">
+            </a>
+         </div>
+         <div class="col-xs-4 col-md-4">
+            <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="..." src="thumbnail.png">
+            </a>
+         </div>
+         <div class="col-xs-4 col-md-4">
+            <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="..." src="thumbnail.png">
+            </a>
+         </div>
+         <div class="col-xs-4 col-md-4">
+            <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="..." src="thumbnail.png">
+            </a>
+         </div>
+         <div class="col-xs-4 col-md-4">
+            <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="..." src="thumbnail.png">
+            </a>
+         </div>
+         <div class="col-xs-4 col-md-4">
+            <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="..." src="thumbnail.png">
+            </a>
+         </div>
+         <div class="col-xs-4 col-md-4">
+            <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="..." src="thumbnail.png">
+            </a>
+         </div>
+         <div class="col-xs-4 col-md-4">
+            <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="..." src="thumbnail.png">
+            </a>
+         </div>
+         <div class="col-xs-4 col-md-4">
+            <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="..." src="thumbnail.png">
+            </a>
+         </div>
+         <div class="col-xs-4 col-md-4">
+            <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="..." src="thumbnail.png">
+            </a>
+         </div>
+         <div class="col-xs-4 col-md-4">
+            <a href="#" class="thumbnail">
+              <img data-src="holder.js/100%x180" alt="..." src="thumbnail.png">
+            </a>
+         </div>
+		 </div>
+		 <div class="col-xs-12" style="text-align:center">
+		 <div class="pagination" id="paginator" style="margin-right:auto;margin-left:auto;margin-top:50px;">
+            <ul>
+              <li class="previous"><a href="#fakelink" class="fui-arrow-left"></a></li>
+              <li class="active"><a href="#fakelink">1</a></li>
+              <li><a href="#fakelink">2</a></li>
+              <li><a href="#fakelink">3</a></li>
+              <li><a href="#fakelink">4</a></li>
+              <li><a href="#fakelink">5</a></li>
+              <li><a href="#fakelink">6</a></li>
+              <li><a href="#fakelink">7</a></li>
+              <li><a href="#fakelink">8</a></li>
+              <li><a href="#fakelink">9</a></li>
+              <li class="next"><a href="#fakelink" class="fui-arrow-right"></a></li>
+            </ul>
+          </div>
+		  </div>
+      </div>
+      
+    </div>
+    
+<!--footer-->
+     <footer>
+      <div class="foot container">
+        <div class="row">
+          <div class="col-md-4 fff">
+            <h3 class="footer-title"><span class="bold">hire</span>fellas</h3>
+            <p style="text-align:justify">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+            <span>Phone : +91-9999999999</span><br>
+            <span>email : dummy@gmail.com</span>
+          </div> 
+
+          <div class="col-md-2 fff">
+             <h3 class="footer-title foothead">Company</h3>
+             <ul>
+                <li><a href="#">About</a></li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Testimonals</a></li>
+             </ul>
+          </div>
+          <div class="col-md-2 fff">
+             <h3 class="footer-title foothead">Community</h3>
+             <ul>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Forum</a></li>
+                <li><a href="#">Support</a></li>
+                <li><a href="#">Newsletter</a></li>
+             </ul>
+          </div>
+          <div class="col-md-4 fff">
+             <h3 class="footer-title"><i>from the</i> <span class="bold">BLOG</span></h3>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <div class="foot2 fff">
+     <div class="col-md-2 col-md-offset-1 hire">
+      <span>2014 HireFellas</span>
+     </div>
+    </div>    
+    <!-- Load JS here for greater good =============================-->
+    <script src="../../static/query/dist/js/jquery-1.8.3.min.js"></script>
+    <script src="../../static/query/dist/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../static/query/dist/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="../../static/query/dist/js/bootstrap.min.js"></script>
+    <script src="../../static/query/dist/js/bootstrap-select.js"></script>
+    <script src="../../static/query/dist/js/bootstrap-switch.js"></script>
+    <script src="../../static/query/dist/js/flatui-checkbox.js"></script>
+    <script src="../../static/query/dist/js/flatui-radio.js"></script>
+    <script src="../../static/query/dist/js/jquery.tagsinput.js"></script>
+    <script src="../../static/query/dist/js/jquery.placeholder.js"></script>
+    <!--<script src="lib/jquery.raty.js"></script>
+	<script src="demo/javascripts/labs.js"></script>-->
+    <script type="text/javascript">
+	
+    $(".tagsinput").tagsInput();
+    </script>
+	<script type="text/javascript">
+		function check_equality(arr0,arr1){
+			if(arr0.length!=arr1.length) return 0;
+			for(var i =0;i<arr0.length;i++){
+				if(arr0[i] != arr1[i]) return 0;
+			}
+			return 1;
+		}
+		function json_get_records(func0,city_list,recval){
+			//alert('getting data for: '+city_list[recval])
+			if(city_list.length == 0){
+				global_raw_data = new Array();
+				return;
+			}
+			$.ajax({
+				type: "GET",
+				url: "../query/",
+				data: { city: city_list[recval] },
+				success: function(data, statusCode, XHR){
+					for(var i=0;i<data.length;i++){
+						global_raw_data.push(data[i]);
+					}
+					//global_pgr_get_status = 1;
+					if(recval == city_list.length-1){
+						func0();
+					}else{
+						json_get_records(func0,city_list,recval+1)
+					}
+				}
+			});
+			
+		}
+		function to_html_element(rec){
+			var html = '<div class="col-xs-4 col-md-4"><a href="#" class="thumbnail"><img data-src="holder.js/100%x180" alt="..." src="'+rec.avatar+'" width="100%" ></a><div class="rec-name"><h6>'+rec.name+'<small>Rating:'+rec.rating+'</small></h6></div></div>';
+			var html2 = '<div class="col-xs-4 col-md-4"><a href="#" class="thumbnail"><img data-src="holder.js/100%x180" alt="..." src="'+rec.avatar+'" width="100%"><div class="rec-name"><img src="'+rec.avatar+'" width="15%" style="width:50px;display:inline;height:50px;margin-top: 5px;border-radius: 50%;border: lightgray 2px solid;"><h7>'+rec.name+'<small>   '+rec.rating+'</small></h7></div></a></div>'
+			return html2;
+		}
+		function refresh_and_update(){
+		// todo: apply mechanism to switch to load screen
+			alert('refreshing..');
+			global_raw_data = new Array();
+			if(!cities.length){
+				clean_record_page();
+			}
+			json_get_records(function(){
+				refilter();
+				paginate_and_render();
+			},cities,0);
+		}
+		function paginate_and_render(){
+			global_paginated_data  = paginate(global_filtered_data,PAGINATION_ROW_COUNT,PAGINATION_COL_COUNT);
+			change_page(1);
+		}
+		// filtering functions.
+		function refresh_filters(){
+			raw_data = document.getElementById('city-tag').getElementsByClassName("tag");
+			var i;
+			new_cities = new Array();
+			for(i=0;i<raw_data.length;i++){
+				new_cities[i] = raw_data[i].getElementsByTagName('span')[0].innerHTML
+				new_cities[i] = new_cities[i].substring(0,new_cities[i].indexOf('&'));
+			}
+			//alert('refreshing flters');
+			if(!check_equality(cities,new_cities)){
+				cities = new_cities;
+				refresh_and_update();
+			}
+			
+			raw_data = document.getElementById('type-tag').getElementsByClassName("tag");
+			new_types = new Array();
+			for(i=0;i<raw_data.length;i++){
+				new_types[i] = raw_data[i].getElementsByTagName('span')[0].innerHTML
+				new_types[i] = new_types[i].substring(0,new_types[i].indexOf('&'));
+			}
+			
+			if(!check_equality(types,new_types)){
+				types = new_types;
+				refilter();
+				paginate_and_render();
+			}
+		}
+		
+		function filter_record(rec){
+			//alert(types.indexOf(rec.type));
+			if(types.indexOf(rec.type)>=0) return 1;
+			return 0;
+		}
+		function refilter(){
+			global_filtered_data = new Array();
+			for(var i=0;i<global_raw_data.length;i++){
+				if(filter_record(global_raw_data[i])) global_filtered_data.push(global_raw_data[i]);
+			}
+		}
+		function refresh_sort(){
+		
+		}
+		function resort(qs,key_func){
+		
+		}
+		
+		// render functions
+		function render_record_page(rec_list,rc,cc){
+			// assume PAGINATION_ROW_COUNT * PAGINATION_COL_COUNT number of records.
+			
+			var target_container = $('.profile-content-data');
+			var i,j;
+			for( i=0; i<rc ; i++){
+				for( j=0; j<cc; j++){
+					if((j+i*rc)<rec_list.length)
+						target_container.append(to_html_element(rec_list[j+i*rc]));
+				}
+				target_container.append("<br>");	// append line break text.
+			}
+			
+		}
+		function clean_record_page(){
+			$('.profile-content-data').html("");
+		}
+		function render_paginator(){
+			html = "<ul><li class='previous'><a href='#fakelink' class='fui-arrow-left'></a></li>";
+			for( var  i =0;i<global_paginated_data.length;i++){
+				if( curr_page == (i+1)){
+					html+="<li class='active'>";
+				}else
+				{
+					html+="<li>";
+				}
+				html+="<a href = '#fakelink' onclick='change_page("+(i+1)+")'>"+(i+1)+"</a></li>";
+			}
+			html += "<li class='next'><a href='#fakelink' class='fui-arrow-right'></a></li></ul>";
+			document.getElementById("paginator").innerHTML = html;
+		}
+		// client-side pagination.
+		function paginate(qs,rc,cc){
+			
+			var res_queryset = new Array();
+			var j,k;
+			for(j=0,k=0;j<qs.length;j+=rc * cc,k++){
+				res_queryset[k] = new Array();
+				for(var  i =0; i<rc * cc; i++){
+					res_queryset[k][i] = qs[j+i];
+				}
+			}
+			//global_paginated_data = res_queryset;
+			return res_queryset;
+		}
+		function change_page(num){
+			clean_record_page();
+			if(global_paginated_data.length){
+				render_record_page(global_paginated_data[parseInt(num)-1],PAGINATION_ROW_COUNT,PAGINATION_COL_COUNT);
+				curr_page = num;
+				render_paginator();
+			}
+		}
+		$(document).ready(function(){
+			json_get_records(function(){
+				global_paginated_data  = paginate(global_raw_data,PAGINATION_ROW_COUNT,PAGINATION_COL_COUNT);
+				change_page(1);
+				refresh_filters();
+			},['{{city}}'],0);
+			
+			$("#city_tag").keydown(function(){
+				refresh_filters();
+			});
+			$("a").click(function(){
+				refresh_filters();
+			});
+			setInterval(function(){refresh_filters();},700);
+		});
+		
+    </script>
+</body>
+</html>
