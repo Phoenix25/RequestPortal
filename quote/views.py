@@ -190,7 +190,7 @@ class QuoteRequestListView(ListView):
 		qs = qs.filter(source = self.request.user)
 		return qs
 	
-# similar to the above view only for quote objects.
+# similar to the above view but for quote objects.
 class QuoteListView(ListView):
 	model = Quote
 	context_object_name = "obj_list"
@@ -204,7 +204,7 @@ class QuoteListView(ListView):
 			self.template_name = "quote/pgr-quote-list.html"
 			self.user_category = 0
 		elif Group.objects.filter(pk=2)[0] in request.user.groups.all():
-			self.template_name = "quote/user-quote-list.html"
+			self.template_name = "quotes.html"	# TODO: shift template to proper directory.
 			self.user_category = 1
 		return super(QuoteListView, self).dispatch(request,*args,**kwargs)
 	

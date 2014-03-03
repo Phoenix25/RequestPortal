@@ -63,6 +63,12 @@ ROOT_URLCONF = 'project2.urls'
 
 WSGI_APPLICATION = 'project2.wsgi.application'
 
+TEMPLATE_CONTEXT_PROCESSORS = (
+    "django.contrib.auth.context_processors.auth",
+    'django.core.context_processors.debug',
+    'django.core.context_processors.i18n',
+    'django.core.context_processors.media',
+)
 
 # Database
 # https://docs.djangoproject.com/en/1.6/ref/settings/#databases

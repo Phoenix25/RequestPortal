@@ -1,0 +1,138 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Loading Bootstrap -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="bootstrap/css/prettify.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="css/flat-ui.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    
+    
+    <!--styles-->
+    <style>
+	html,body {
+		height:100%;
+		}
+		
+	/*header*/
+	#header {
+		height:13.93%;
+		width:100%;
+		}
+	#header .row {
+		margin-right:0px;
+		}
+	#header #user {
+		width:50px;
+		height:50px;
+		border:1px solid #000;
+		position:absolute;
+		top:20px;
+		}
+	#header span {
+		position:absolute;
+		top:30px;
+		left:70px;
+		}
+		
+	/*main container*/
+	#main {
+		height:86.07%;
+		}
+	#main>div {
+		float:left;
+		height:100%;
+		}
+    .profile {
+		background:rgb(189,195,199);
+		width:20%;
+		padding:5% 1.83%;/*100px 25px 50px*/
+		}
+	.profile-content {
+		background:rgb(243,243,243);
+		width:80%;
+		}
+	.profile #user {
+		display:block;
+		width:140px;
+		height:140px;
+	    margin:40px auto 30px;
+		border:2px solid #000;
+		}
+	#name {
+		color:#000;
+		}
+		
+	@media screen and (min-width:320px) and (max-width:480px){
+		.profile {
+			width:35%;
+			}
+		.profile-content {
+			width:65%;
+			}
+		
+		}
+	</style>
+</head>
+
+<body>
+<!--header-->
+    <header>
+       <div id="header">
+          <div class="row">
+             <div class="col-xs-2 col-xs-offset-1">
+                <h3><b>hire</b>fellas</h3>
+             </div>
+             <div class="col-xs-4 pull-right">
+                <img id="user" src="images/exaple-image.jpg" alt="sample-image" class="img-circle">
+                <span id="name" class="head-name">Name must be given here</span>
+             </div>            
+          </div>
+       </div>
+    </header>
+    
+<!--container-->
+    <div id="main">
+      <div class="profile">
+         <h6>Location</h6>
+         <span class="tagsinput" style="background:none;border:none;">
+            <span class="tag">
+              <span>city</span>
+              <a class="tagsinput-remove-link"></a>
+            </span>
+          </span>
+          <input class="form-control" type="text" placeholder="Type New Location" value=""/>
+      </div>
+      <div class="profile-content">
+         
+      </div>
+    </div>
+    
+    <!-- Load JS here for greater good =============================-->
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-select.js"></script>
+    <script src="js/bootstrap-switch.js"></script>
+    <script src="js/flatui-checkbox.js"></script>
+    <script src="js/flatui-radio.js"></script>
+    <script src="js/jquery.tagsinput.js"></script>
+    <script src="js/jquery.placeholder.js"></script>
+    <script src="lib/jquery.raty.js"></script>
+	<script src="demo/javascripts/labs.js"></script>
+    <script type="text/javascript">
+	$.fn.raty.defaults.path = 'lib/images';
+	$(function(){
+		$('#default').raty();
+		});
+
+    </script>
+</body>
+</html>

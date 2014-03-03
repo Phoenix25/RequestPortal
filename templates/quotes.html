@@ -1,0 +1,276 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Loading Bootstrap -->
+    <link href="../../static/query/dist/css/bootstrap.css" rel="stylesheet">
+    <link href="../../static/query/dist/css/prettify.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="../../static/query/dist/css/flat-ui.css" rel="stylesheet">
+    <link href="../../static/query/dist/css/docs.css" rel="stylesheet">
+    
+    <!-- Loading Flat UI -->
+    <link href="css/flat-ui.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    
+    
+    <!--styles-->
+    <style>
+	html,body {
+		height:100%;
+		min-width:1366px;
+		}
+		
+	/*header*/
+	#header {
+		background:rgb(118,199,192);
+		}
+		
+	#header .title {
+		color:#fff;
+		margin-top:20px;
+		}
+	
+	#header .pull-right {
+		margin:5px 70px;
+		}
+		
+	#header .row {
+		margin-right:0;
+		}	
+		
+	#header .but>* {
+		padding:10px;
+		width:100px;
+		}
+		
+	#header .but>*>* {
+		width:80px;
+		}
+		
+	/*main container*/
+	#main {
+		height:900px;/*86.07%*/
+		margin:0px 150px;
+		}
+	#main>div {
+		float:left;
+		height:100%;
+		}
+    .profile {
+		background:rgb(189,195,199);
+		width:30%;
+		}
+	.profile-content {
+		background:rgb(243,243,243);
+		padding:10px 20px;
+		width:70%;
+		}
+		
+	.profile-content>* {
+		margin-bottom:20px;
+		}
+		
+	.radleft .radio {
+		float:left;
+		}
+		
+	.profile #user {
+		display:block;
+		width:140px;
+		height:140px;
+		-webkit-border-radius:140px;
+	    margin:40px auto 30px;
+		border:2px solid #000;
+		}
+	#name {
+		color:#000;
+		}
+		
+/*footer*/
+    .bold {
+		font-weight:bolder;
+		}
+	
+	.fff {
+		color:#fff;
+		}
+		
+	footer {
+		background:rgb(118,199,192);
+		}	
+		
+	.foothead {
+		color:rgb(72,124,119);
+		}
+		
+	footer .row>* {
+		margin-bottom:50px;
+		}
+		
+	.foot2 {
+		height:50px;
+		background:rgb(106,179,172);
+		}
+		
+	.foot2 .hire {
+		padding:10px 0;
+		}
+		
+	footer a {
+		color:#fff;
+		}
+/*	@media screen and (min-width:320px) and (max-width:480px){
+		.profile {
+			width:35%;
+			}
+		.profile-content {
+			width:65%;
+			}
+		
+		}*/
+	</style>
+</head>
+
+<body>
+<!--header-->
+    <header>
+       <div id="header">
+          <div class="row">
+             <div class="title col-lg-2 col-md-2 col-xs-2 col-lg-offset-1 col-xs-offset-1 col-md-offset-1">
+                <span class="h4"><span class="bold">hire</span>fellas</span>
+             </div>
+             <div class="but col-lg-5 col-md-5 col-xs-5 pull-right">
+              <div class="col-lg-3 col-md-3 col-xs-3">
+                <a href="#" class="btn btn-embossed btn-block btn-primary">HOME</a>
+              </div>
+              <div class="col-lg-3 col-md-3 col-xs-3" style="width:170px;">
+                <a href="#" class="btn btn-embossed btn-block btn-primary" style="width:150px;">HOW IT WORKS</a>
+              </div> 
+              <div class="col-lg-3 col-md-3 col-xs-3">
+                <a href="#" class="btn btn-embossed btn-block btn-primary">ABOUT</a>
+              </div>
+              <div class="col-lg-3 col-md-3 col-xs-3">
+                <a href="#" class="btn btn-embossed btn-block btn-primary">LOGIN</a>
+              </div>  
+             </div>       
+          </div>
+       </div>
+    </header>
+    
+<!--container-->
+    <div id="main">
+      <div class="profile">
+         <img id="user" src="images/exaple-image.jpg" alt="sample-image" class="img-circle">
+         <center><span id="name" class="user-name">{{user}}</span></center>
+         <center><div id="default"></div></center>
+         <div class="col-md-10 col-xs-10" style="margin:7%;">
+            <a href="#" class="btn btn-block btn-lg btn-primary">Events</a>
+            <a href="#" class="btn btn-block btn-lg btn-primary">Messages</a>
+         </div>
+      </div>
+      <div class="profile-content">
+         <h5 style="padding-bottom:10px;border-bottom:1px solid #000;">Received Quotes</h5>
+         <div class="row">
+           <div class="col-md-2">
+             <h6>#1234</h6>
+           </div>
+           <div class="col-md-3">
+             <h6>Photographer</h6>
+           </div>
+           <div class="col-md-3">
+             <h6>Quote Price</h6>
+           </div>
+           <div class="col-md-4">
+             <h6>Info</h6>
+           </div>
+         </div>
+         {% for object in obj_list %}
+         <div class="row">
+           <div class="col-md-2">
+             <span class="btn btn-xs btn-primary">Accept</span>
+           </div>
+           <div class="col-md-3">
+             <span>{{object.req.target.username}}</span>
+           </div>
+           <div class="col-md-3">
+             <span>{{object.price_range}}</span>
+           </div>
+           <div class="col-md-4">
+             <p style="font-size:14px">{{object.desc}}</p>
+           </div>
+         </div>
+         {% endfor %}
+      </div>
+    </div>
+    
+<!--footer-->
+    <footer>
+      <div class="foot container">
+        <div class="row">
+          <div class="col-lg-4 col-md-4 col-xs-4 fff">
+            <h3 class="footer-title"><span class="bold">hire</span>fellas</h3>
+            <p style="text-align:justify">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+            <span>Phone : +91-9999999999</span><br>
+            <span>email : dummy@gmail.com</span>
+          </div> 
+
+          <div class="col-lg-2 col-md-2 col-xs-2 fff">
+             <h3 class="footer-title foothead">Company</h3>
+             <ul>
+                <li><a href="#">About</a></li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Testimonals</a></li>
+             </ul>
+          </div>
+          <div class="col-lg-2 col-md-2 col-xs-2 fff">
+             <h3 class="footer-title foothead">Community</h3>
+             <ul>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Forum</a></li>
+                <li><a href="#">Support</a></li>
+                <li><a href="#">Newsletter</a></li>
+             </ul>
+          </div>
+          <div class="col-lg-4 col-md-4 col-xs-4 fff">
+             <h3 class="footer-title"><i>from the</i> <span class="bold">BLOG</span></h3>
+          
+          </div>
+        </div>
+      </div>
+    </footer>
+    <div class="foot2 fff">
+     <div class="col-lg-2 col-md-2 col-xs-2 col-lg-offset-1 col-xs-offset-1 col-md-offset-1 hire">
+      <span>2014 HireFellas</span>
+     </div>
+    </div>
+    
+    <!-- Load JS here for greater good =============================-->
+    <script src="../../static/query/dist/js/jquery-1.8.3.min.js"></script>
+    <script src="../../static/query/dist/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../static/query/dist/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="../../static/query/dist/js/bootstrap.min.js"></script>
+    <script src="../../static/query/dist/js/bootstrap-select.js"></script>
+    <script src="../../static/query/dist/js/bootstrap-switch.js"></script>
+    <script src="../../static/query/dist/js/flatui-checkbox.js"></script>
+    <script src="../../static/query/dist/js/flatui-radio.js"></script>
+    <script src="../../static/query/dist/js/jquery.tagsinput.js"></script>
+    <script src="../../static/query/dist/js/jquery.placeholder.js"></script>
+    <script src="lib/jquery.raty.js"></script>
+	<script src="demo/javascripts/labs.js"></script>
+  <!--  <script type="text/javascript">
+	$.fn.raty.defaults.path = 'lib/images';
+	$(function(){
+		$('#default').raty();
+		});
+
+    </script>-->
+</body>
+</html>

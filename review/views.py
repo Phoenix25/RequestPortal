@@ -5,6 +5,8 @@ from review.models import Review,ReviewToken
 from django.http import HttpResponse
 from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
+from query.context_processors import basic_pgr
+from django.template import RequestContext
 # Create your views here.
 
 class ReviewTokenList(ListView):
@@ -25,6 +27,9 @@ class ReviewListView(ListView):
 		qs = qs.filter(pgr = User.objects.filter(pk = self.request.GET['pk'])[0])
 		#import pdb;pdb.set_trace()
 		return qs
+	def get_context_data(self,**kwargs):
+		ctx = super(ReviewListView, self).get_context_data(**kwargs)
+		return RequestContext(self.request,ctx,processors=[basic_pgr])
 
 class ReviewView(CreateView):
 	model = Review
@@ -38,7 +43,7 @@ class ReviewView(CreateView):
 		if not ( token.user == request.user and token.active == 1 ):
 			raise PermissionDenied
 		
-		r = Review(desc = request.POST['desc'], rating = request.POST['rating'])
+		r = Review(desc = request.POST['desc'], rating = request.POST['rating'], title=request.POST['title'])
 		r.source = request.user
 		r.pgr = token.pgr
 		r.save()

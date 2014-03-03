@@ -1,0 +1,302 @@
+<!doctype html>
+<html>
+<head>
+<meta charset="utf-8">
+<title>Untitled Document</title>
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    
+    <!-- Loading Bootstrap -->
+    <link href="bootstrap/css/bootstrap.css" rel="stylesheet">
+    <link href="bootstrap/css/prettify.css" rel="stylesheet">
+
+    <!-- Loading Flat UI -->
+    <link href="css/flat-ui.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    
+    
+    <!--styles-->
+    <style>
+	html,body {
+		height:100%;
+		min-width:1366px;
+		}
+		
+	/*header*/
+	#header {
+		background:rgb(118,199,192);
+		}
+		
+	#header .title {
+		color:#fff;
+		margin-top:20px;
+		}
+	
+	#header .pull-right {
+		margin:5px 70px;
+		}
+		
+	#header .row {
+		margin-right:0;
+		}	
+		
+	#header .but>* {
+		padding:10px;
+		width:100px;
+		}
+		
+	#header .but>*>* {
+		width:80px;
+		}
+		
+	/*main container*/
+	#main {
+		height:1100px;/*86.07%*/
+		margin:10px 150px;
+		}
+		
+	#main .sort {
+		width:100%;
+		height:50px;
+		border-radius:5px;
+		background:#ccc;
+		margin-bottom:8px;
+		}	
+		
+	#main .profile,.profile-content {
+		float:left;
+		height:80%;
+		}
+    .profile {
+		background:rgb(189,195,199);
+		width:30%;
+		border-radius:5px;
+		padding:5% 1.83%;/*100px 25px 50px*/
+		}
+	.profile-content {
+		background:rgb(243,243,243);
+		width:70%;
+		}
+	.profile #user {
+		display:block;
+		width:140px;
+		height:140px;
+		-webkit-border-radius:140px;
+	    margin:40px auto 30px;
+		border:2px solid #000;
+		}
+	#name {
+		color:#000;
+		}
+
+	/*footer*/
+	.bold {
+		font-weight:bolder;
+		}
+	
+	.fff {
+		color:#fff;
+		}
+		
+	footer {
+		background:rgb(118,199,192);
+		}	
+		
+	.foothead {
+		color:rgb(72,124,119);
+		}
+		
+	footer .row>* {
+		margin-bottom:50px;
+		}
+		
+	.foot2 {
+		height:50px;
+		background:rgb(106,179,172);
+		}
+		
+	.foot2 .hire {
+		padding:10px 0;
+		}
+		
+	footer a {
+		color:#fff;
+		}
+				
+	@media screen and (min-width:320px) and (max-width:480px){
+		.profile {
+			width:35%;
+			}
+		.profile-content {
+			width:65%;
+			}
+		
+		}
+	</style>
+</head>
+
+<body>
+<!--header-->
+    <header>
+       <div id="header">
+          <div class="row">
+             <div class="title col-md-2 col-xs-2 col-xs-offset-1 col-md-offset-1">
+                <span class="h4"><span class="bold">hire</span>fellas</span>
+             </div>
+             <div class="but col-md-5 col-xs-5 pull-right">
+              <div class="col-md-3 col-xs-3">
+                <a href="#" class="btn btn-block btn-primary">HOME</a>
+              </div>
+              <div class="col-md-3 col-xs-3" style="width:170px;">
+                <a href="#" class="btn btn-block btn-primary" style="width:150px;">HOW IT WORKS</a>
+              </div> 
+              <div class="col-md-3 col-xs-3">
+                <a href="#" class="btn btn-block btn-primary">ABOUT</a>
+              </div>
+              <div class="col-md-3 col-xs-3">
+                <a href="#" class="btn btn-block btn-primary">LOGIN</a>
+              </div>  
+             </div>       
+          </div>
+       </div>
+    </header>
+    
+<!--container-->
+    <div id="main">
+      <div class="sort">
+      
+      
+      </div>
+      <div class="profile">
+         <p>LOCATION:</p>
+         <div id="tagsinput_tagsinput" class="tagsinput">
+           <span class="tag">
+             <span>Clean&nbsp;&nbsp;</span>
+             <a class="tagsinput-remove-link"></a>
+           </span>
+           <span class="tag">
+             <span>Fresh&nbsp;&nbsp;</span>
+             <a class="tagsinput-remove-link"></a>
+           </span>
+           <span class="tag">
+             <span>Modern&nbsp;&nbsp;</span>
+             <a class="tagsinput-remove-link"></a>
+           </span>
+           <span class="tag">
+             <span>Unique&nbsp;&nbsp;</span>
+             <a class="tagsinput-remove-link"></a>
+           </span>
+           <div class="tagsinput-add-container" id="tagsinput_addTag">
+             <div class="tagsinput-add"></div>
+             <input id="tagsinput_tag" value="" data-default="" style="color: rgb(102, 102, 102); width: 7px;">
+           </div>
+         </div>
+         
+         <p>PHOTOGRAPHER TYPE:</p>
+         <div id="tagsinput_tagsinput" class="tagsinput">
+           <span class="tag">
+             <span>Clean&nbsp;&nbsp;</span>
+             <a class="tagsinput-remove-link"></a>
+           </span>
+           <span class="tag">
+             <span>Fresh&nbsp;&nbsp;</span>
+             <a class="tagsinput-remove-link"></a>
+           </span>
+           <span class="tag">
+             <span>Modern&nbsp;&nbsp;</span>
+             <a class="tagsinput-remove-link"></a>
+           </span>
+           <span class="tag">
+             <span>Unique&nbsp;&nbsp;</span>
+             <a class="tagsinput-remove-link"></a>
+           </span>
+           <div class="tagsinput-add-container" id="tagsinput_addTag">
+             <div class="tagsinput-add"></div>
+             <input id="tagsinput_tag" value="" data-default="" style="color: rgb(102, 102, 102); width: 7px;">
+           </div>
+         </div>
+         
+      </div>
+      <div class="profile-content">
+         
+      </div>
+      <div class="pagination" style="left:350px;margin-top:50px;">
+            <ul>
+              <li class="previous"><a href="#fakelink" class="fui-arrow-left"></a></li>
+              <li class="active"><a href="#fakelink">1</a></li>
+              <li><a href="#fakelink">2</a></li>
+              <li><a href="#fakelink">3</a></li>
+              <li><a href="#fakelink">4</a></li>
+              <li><a href="#fakelink">5</a></li>
+              <li><a href="#fakelink">6</a></li>
+              <li><a href="#fakelink">7</a></li>
+              <li><a href="#fakelink">8</a></li>
+              <li><a href="#fakelink">9</a></li>
+              <li class="next"><a href="#fakelink" class="fui-arrow-right"></a></li>
+            </ul>
+          </div>
+    </div>
+    
+<!--footer-->
+     <footer>
+      <div class="foot container">
+        <div class="row">
+          <div class="col-md-4 fff">
+            <h3 class="footer-title"><span class="bold">hire</span>fellas</h3>
+            <p style="text-align:justify">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
+            <span>Phone : +91-9999999999</span><br>
+            <span>email : dummy@gmail.com</span>
+          </div> 
+
+          <div class="col-md-2 fff">
+             <h3 class="footer-title foothead">Company</h3>
+             <ul>
+                <li><a href="#">About</a></li>
+                <li><a href="#">FAQ</a></li>
+                <li><a href="#">Contact</a></li>
+                <li><a href="#">Terms</a></li>
+                <li><a href="#">Privacy</a></li>
+                <li><a href="#">Testimonals</a></li>
+             </ul>
+          </div>
+          <div class="col-md-2 fff">
+             <h3 class="footer-title foothead">Community</h3>
+             <ul>
+                <li><a href="#">Blog</a></li>
+                <li><a href="#">Forum</a></li>
+                <li><a href="#">Support</a></li>
+                <li><a href="#">Newsletter</a></li>
+             </ul>
+          </div>
+          <div class="col-md-4 fff">
+             <h3 class="footer-title"><i>from the</i> <span class="bold">BLOG</span></h3>
+          </div>
+        </div>
+      </div>
+    </footer>
+    <div class="foot2 fff">
+     <div class="col-md-2 col-md-offset-1 hire">
+      <span>2014 HireFellas</span>
+     </div>
+    </div>    
+    <!-- Load JS here for greater good =============================-->
+    <script src="js/jquery-1.8.3.min.js"></script>
+    <script src="js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="js/jquery.ui.touch-punch.min.js"></script>
+    <script src="js/bootstrap.min.js"></script>
+    <script src="js/bootstrap-select.js"></script>
+    <script src="js/bootstrap-switch.js"></script>
+    <script src="js/flatui-checkbox.js"></script>
+    <script src="js/flatui-radio.js"></script>
+    <script src="js/jquery.tagsinput.js"></script>
+    <script src="js/jquery.placeholder.js"></script>
+    <script src="lib/jquery.raty.js"></script>
+	<script src="demo/javascripts/labs.js"></script>
+    <script type="text/javascript">
+	$.fn.raty.defaults.path = 'lib/images';
+	$(function(){
+		$('#default').raty();
+		});
+
+    </script>
+</body>
+</html>
