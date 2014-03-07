@@ -490,13 +490,19 @@
 			//global_paginated_data = res_queryset;
 			return res_queryset;
 		}
+		function clean_paginator(){
+			document.getElementById("paginator").innerHTML = "";
+		}
 		function change_page(num){
 			clean_record_page();
+			clean_paginator();
 			if(global_paginated_data.length){
 				//alert('rendering records...')
 				render_record_page(global_paginated_data[parseInt(num)-1],PAGINATION_ROW_COUNT,PAGINATION_COL_COUNT);
 				curr_page = num;
-				render_paginator();
+				
+				if(global_paginated_data.length > 1)
+					render_paginator();
 			}
 		}
 		$(document).ready(function(){
