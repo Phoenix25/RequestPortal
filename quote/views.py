@@ -83,6 +83,9 @@ class QuoteRequestView(FormView):
 			q = QuoteRequest()
 			q.desc = request.POST['desc']
 			q.location = request.POST['place']
+			q.date = request.POST['date']
+			q.similar = request.POST['similar']
+			q.event = request.POST['event']
 			q.source = request.user	# 'source' refers to the customer
 			q.target = PGRData.objects.filter(pk = pgr_id)[0].user # get the target Photographer object and assign it to the QuoteRequest record.
 			q.save()
@@ -197,9 +200,10 @@ class QuoteListView(ListView):
 	user_category = -1
 	
 	def dispatch(self, request, *args, **kwargs):
+		import pdb;pdb.set_trace()
 		if not self.request.user.is_authenticated:
 			return redirect("accounts:login")
-			
+				
 		if Group.objects.filter(pk=1)[0] in request.user.groups.all():
 			self.template_name = "quote/pgr-quote-list.html"
 			self.user_category = 0

@@ -163,6 +163,25 @@ class UploadLists(ListView):
 		for i in documents.order_by('index'):
 			if exp.match(i.doc.url).groups()[0] in ["png","jpg","gif"]:
 				res.append(i)
-				
-		return res
-	
+		
+		#import pdb;pdb.set_trace()
+		pg = int(self.request.GET['page'])
+		numdocs = 9
+		offset = pg*numdocs
+		if( offset < len(res)-numdocs ) :
+			return res[offset:offset+numdocs]
+		elif(offset<len(res)):
+			return res[offset:(len(res))]
+		else:
+			return []
+
+	def get_context_data(self):
+		documents = Document.objects.filter(pgr = User.objects.filter(pk=self.request.GET['pk'])[0])
+		res = []
+		exp = re.compile(r"^.*\.(.*)$")
+		for i in documents.order_by('index'):
+			if exp.match(i.doc.url).groups()[0] in ["png","jpg","gif"]:
+				res.append(i)
+		ctx = super(UploadLists,self).get_context_data()
+		ctx['pages'] = range(1,len(res))
+		return ctx

@@ -1,0 +1,12 @@
+
+<form id="quote_form" action="" method="POST">
+	<div class="form-group">
+		{%csrf_token%}
+		{{form.as_p}}
+		<input name="target" type="hidden" value="{{target}}"/>
+		<!-- Uncomment the line below for standard post. Comment it for AJAX post -->
+		<input type=submit></input>
+	</div>
+</form>
+<!-- Uncomment the line below for AJAX post. Comment it for standard post -->
+<div class="quote-req-container"><div id="quote-req-button" class="btn btn-lg btn-success" value="POST REQUEST" onclick="post_quote_form({{target}})">POST REQUEST</div></div>

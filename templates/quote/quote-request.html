@@ -1,12 +1,62 @@
+{%extends 'flat-ui-base.html'%}
 
-<form id="quote_form" action="" method="POST">
-	<div class="form-group">
-		{%csrf_token%}
-		{{form.as_p}}
-		<input name="target" type="hidden" value="{{target}}"/>
-		<!-- Uncomment the line below for standard post. Comment it for AJAX post -->
-		<input type=submit></input>
-	</div>
-</form>
-<!-- Uncomment the line below for AJAX post. Comment it for standard post -->
-<div class="quote-req-container"><div id="quote-req-button" class="btn btn-lg btn-success" value="POST REQUEST" onclick="post_quote_form({{target}})">POST REQUEST</div></div>
+<!doctype html>
+{%block title%}
+	Quote Request
+{%endblock%}
+{%block content%}
+<div class="profile">
+         <img id="user" src="../../static/query/resources/images/exaple-image.jpg" alt="sample-image" class="img-circle">
+         <center><span id="name" class="user-name">Name must be given here</span></center>
+         <center><div id="default"></div></center>
+         <div class="col-lg-10 col-md-10 col-xs-10" style="margin:7%;">
+            <a href="#" class="btn btn-block btn-lg btn-primary">About</a>
+            <a href="#" class="btn btn-block btn-lg btn-primary">Portfolio</a>
+            <a href="#" class="btn btn-block btn-lg btn-primary">Reviews</a>
+            <a href="#" class="btn btn-block btn-lg btn-primary">Hire</a>
+         </div>
+      </div>
+      <div class="profile-content">
+		
+		<form method="POST" action="">
+		{% csrf_token %}
+         <div class="col-lg-4 col-md-4 col-xs-4">
+         <label>I'm planning a<br>
+           <input type="text" name = 'event' class="form-control" placeholder="" />
+         </label>
+         </div>
+         <div class="col-lg-4 col-md-4 col-xs-4">
+         <label>Date of event<br>
+           <input type="text" name='date' class="form-control" placeholder="" />
+         </label>
+         </div>
+         <div class="col-lg-4 col-md-4 col-xs-4">
+         <label>Event Location<br>
+           <input type="text" name = 'place' class="form-control" placeholder="" />
+         </label>
+         </div><br>
+         <div class="col-lg-12 col-md-12 col-xs-12">
+          <label>Event Details</label><br>
+           <textarea class="form-control" name = 'desc' style="height:100px;width:100%;"></textarea>
+         </div>
+         <div class="col-lg-12 col-md-12 col-xs-12 radleft">
+           <label>I'd like to be contacted with additional quotes from:</label><br>
+           <label class="radio col-lg-4 col-md-4 col-xs-4">
+             <input type="radio" name="similar" value="1" data-toggle="radio">Up to 5 photographers&nbsp;&nbsp;
+           </label>
+           <label class="radio col-lg-4 col-md-4 col-xs-4">
+             <input type="radio" name="similar" value="2" data-toggle="radio">Up to 10 vendors&nbsp;&nbsp;
+           </label>
+           <label class="radio col-lg-4 col-md-4 col-xs-4">
+             <input type="radio" name="similar" value="3" data-toggle="radio">None, thanks&nbsp;&nbsp;
+           </label>
+		   	<input name="target" type="hidden" value="{{target}}"/>
+         </div>
+         <div class="col-lg-3 col-md-3 col-xs-3 pull-right">
+           <button type='submit' class="btn btn-block btn-inverse">GET QUOTE</button>
+         </div>
+         </form>
+      </div>
+    </div>
+{%endblock%}
+

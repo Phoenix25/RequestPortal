@@ -1,10 +1,27 @@
 <!-- sample test page for displaying lists of images. Modify as necessary-->
 
 <!-- use i.doc.url to access a single image -->
+{% extends 'flat-ui-base.html'%}
+{%block title%}Portfolio{%endblock%}
+{%block content%}
+<div class="profile">
+         <img id="user" src="../../static/query/resources/images/exaple-image.jpg" alt="sample-image" class="img-circle">
+         <center><span id="name" class="user-name">Name must be given here</span></center>
+         <center><div id="default"></div></center>
+         <div class="col-lg-10 col-md-10 col-xs-10" style="margin:7%;">
+            <a href="#" class="btn btn-block btn-lg btn-primary">About</a>
+            <a href="#" class="btn btn-block btn-lg btn-primary">Portfolio</a>
+            <a href="#" class="btn btn-block btn-lg btn-primary">Reviews</a>
+            <a href="#" class="btn btn-block btn-lg btn-primary">Hire</a>
+         </div>
+      </div>
+	   <div class="profile-content">
 <div id="portfolio">
 	{%for i in object_list%}
-		<div class="img-container">
+		<div class="img-container col-xs-4">
 			<img src="{{i.doc.url}}" style = "height:200px"></img>
 		</div>
 	{%endfor%}
 </div> 
+</div>
+{%endblock%}
