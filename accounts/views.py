@@ -11,6 +11,7 @@ from django.core.urlresolvers import reverse
 from django.contrib.auth.models import User,Group
 from django.http import HttpResponse, HttpResponseRedirect
 import re
+import math
 # Create your models here.
 
 permission_lists = {'test':['pybb.add_post','pybb.view_post']}
@@ -140,11 +141,12 @@ def upload(request):
 			doc0.pgr = request.user
 			doc0.doc = file
 			#import pdb;pdb.set_trace()
-			if exp.match(doc0.doc.url).groups()[0] in ["png","jpg","gif"]:
-				doc0.visible = 'true';
+			if exp.match(doc0.doc.url).groups()[0].lower() in ["png","jpg","gif"]:
+				doc0.visible = 'true'
 			else:
-				doc0.visible = 'false';
-			doc0.index = curr_index+1;
+				doc0.visible = 'false'
+			doc0.index = curr_index+1
+			curr_index+=1
 			doc0.save()
 		
 		return HttpResponse("Success")
@@ -154,34 +156,58 @@ def upload(request):
 class UploadLists(ListView):
 	model = Document
 	template_name = "query/portfolio.html"
-	
+	numdocs = 9
 	def get_queryset(self):
+		#import pdb;pdb.set_trace();
 		#pgr_target = PGRData.objects.filter(user = User.objects.filter(pk=self.request.GET['pk'])[0])
-		documents = Document.objects.filter(pgr = User.objects.filter(pk=self.request.GET['pk'])[0])
+		documents = Document.objects.filter(pgr = User.objects.filter(pk=self.kwargs['pk'])[0])
 		res = []
 		exp = re.compile(r"^.*\.(.*)$")
 		for i in documents.order_by('index'):
-			if exp.match(i.doc.url).groups()[0] in ["png","jpg","gif"]:
+			if exp.match(i.doc.url).groups()[0].lower() in ["png","jpg","gif"]:
 				res.append(i)
 		
 		#import pdb;pdb.set_trace()
-		pg = int(self.request.GET['page'])
-		numdocs = 9
-		offset = pg*numdocs
-		if( offset < len(res)-numdocs ) :
-			return res[offset:offset+numdocs]
+		pg = int(self.kwargs['page'])-1
+		
+		offset = pg*self.numdocs
+		if( offset < len(res)-self.numdocs ) :
+			return res[offset:offset+self.numdocs]
 		elif(offset<len(res)):
 			return res[offset:(len(res))]
 		else:
 			return []
 
 	def get_context_data(self):
-		documents = Document.objects.filter(pgr = User.objects.filter(pk=self.request.GET['pk'])[0])
+		#import pdb;pdb.set_trace();
+		documents = Document.objects.filter(pgr = User.objects.filter(pk=self.kwargs['pk'])[0])
 		res = []
 		exp = re.compile(r"^.*\.(.*)$")
 		for i in documents.order_by('index'):
-			if exp.match(i.doc.url).groups()[0] in ["png","jpg","gif"]:
+			if exp.match(i.doc.url).groups()[0].lower() in ["png","jpg","gif"]:
 				res.append(i)
 		ctx = super(UploadLists,self).get_context_data()
-		ctx['pages'] = range(1,len(res))
+		nums = range(1,int(math.ceil(len(res)/self.numdocs))+2)
+		pages = []
+		for i in nums:
+			if i==int(self.kwargs['page']):
+				pages.append({'number':i,'class':'active'})
+			else:
+				pages.append({'number':i,'class':''})
+		ctx['pages'] = pages
+		
+		pg = int(self.kwargs['page'])
+		
+		#if not math.ceil(len(res)/self.numdocs)<=1:
+		ctx['paginator'] = 1
+		
+		if not pg==1:
+			ctx['paginator_prev'] = 1
+			
+		if not pg==len(res):
+			ctx['paginator_next'] = 1
+		ctx['page'] = self.kwargs['page']
+		ctx['pk'] = self.kwargs['pk']
+		ctx['pgr'] = PGRData.objects.filter(user = User.objects.filter(pk = self.kwargs['pk'] ) [0] ) [0]
+
 		return ctx

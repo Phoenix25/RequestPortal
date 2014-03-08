@@ -7,6 +7,7 @@ from django.core.exceptions import PermissionDenied
 from django.contrib.auth.models import User
 from query.context_processors import basic_pgr
 from django.template import RequestContext
+from query.views import PGRData
 # Create your views here.
 
 class ReviewTokenList(ListView):
@@ -24,12 +25,13 @@ class ReviewListView(ListView):
 	context_object_name = "review_list"
 	def get_queryset(self):	
 		qs = super(ReviewListView, self).get_queryset()
-		qs = qs.filter(pgr = User.objects.filter(pk = self.request.GET['pk'])[0])
+		qs = qs.filter(pgr = User.objects.filter(pk = self.kwargs['pk'])[0])
 		#import pdb;pdb.set_trace()
 		return qs
 	def get_context_data(self,**kwargs):
 		ctx = super(ReviewListView, self).get_context_data(**kwargs)
-		return RequestContext(self.request,ctx,processors=[basic_pgr])
+		ctx['pgr'] = PGRData.objects.filter(user = User.objects.filter(pk = self.kwargs['pk'] ) [0] ) [0]
+		return ctx
 
 class ReviewView(CreateView):
 	model = Review

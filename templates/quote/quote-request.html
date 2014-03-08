@@ -6,14 +6,14 @@
 {%endblock%}
 {%block content%}
 <div class="profile">
-         <img id="user" src="../../static/query/resources/images/exaple-image.jpg" alt="sample-image" class="img-circle">
-         <center><span id="name" class="user-name">Name must be given here</span></center>
+         <img id="user" src="{{pgr.avatar.url}}" alt="sample-image" class="img-circle">
+         <center><span id="name" class="user-name">{{pgr.user.username}} {{pgr.user.first_name}}</span></center>
          <center><div id="default"></div></center>
          <div class="col-lg-10 col-md-10 col-xs-10" style="margin:7%;">
             <a href="#" class="btn btn-block btn-lg btn-primary">About</a>
-            <a href="#" class="btn btn-block btn-lg btn-primary">Portfolio</a>
-            <a href="#" class="btn btn-block btn-lg btn-primary">Reviews</a>
-            <a href="#" class="btn btn-block btn-lg btn-primary">Hire</a>
+            <a href="{%url 'portfolio' pk=pgr.user.pk page='1' %}" class="btn btn-block btn-lg btn-primary">Portfolio</a>
+            <a href="{%url 'reviewlist' pk=pgr.user.pk %}" class="btn btn-block btn-lg btn-primary">Reviews</a>
+            <a href="{%url 'hire' target=pgr.user.pk%}" class="btn btn-block btn-lg btn-primary active">Hire</a>
          </div>
       </div>
       <div class="profile-content">

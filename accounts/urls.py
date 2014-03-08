@@ -67,7 +67,7 @@ urlpatterns = patterns('',
 						   
 						url(r'^upload-list/$',
                            UploadLists.as_view(),
-                           name='portfoliolist'),
+                           name='portfolio'),
                        )
                        
 						

@@ -37,9 +37,10 @@ class QuoteRequestView(FormView):
 	def get_context_data(self, **kwargs):
 		ctx = super(QuoteRequestView, self).get_context_data(**kwargs)
 		try:
-			ctx['target'] = self.request.GET['target']
+			ctx['target'] = self.kwargs['target']
 		except KeyError as e:
 			raise PermissionDenied("TARGET_MISSING")
+		ctx['pgr'] = PGRData.objects.filter(user = User.objects.filter(pk = self.kwargs['target'] ) [0] ) [0]
 		return ctx
 	
 	#return the class representing the form
@@ -208,7 +209,7 @@ class QuoteListView(ListView):
 			self.template_name = "quote/pgr-quote-list.html"
 			self.user_category = 0
 		elif Group.objects.filter(pk=2)[0] in request.user.groups.all():
-			self.template_name = "quotes.html"	# TODO: shift template to proper directory.
+			self.template_name = "quote/user-quote-list.html"	# TODO: shift template to proper directory.
 			self.user_category = 1
 		return super(QuoteListView, self).dispatch(request,*args,**kwargs)
 	

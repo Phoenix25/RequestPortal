@@ -1,22 +1,23 @@
 <!doctype html>
-{% load staticfiles %}
 <html>
 <head>
 <meta charset="utf-8">
-<title>{%block title%}{%endblock%}</title>
+<title>Untitled Document</title>
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     
     <!-- Loading Bootstrap -->
-    <link href="{% static 'query/resources/css/bootstrap.css' %}" rel="stylesheet">
-    <link href="{% static 'query/resources/css/prettify.css' %}" rel="stylesheet">
+    <link href="../../static/query/resources/css/bootstrap.css" rel="stylesheet">
+    <link href="../../static/query/resources/css/prettify.css" rel="stylesheet">
 
     <!-- Loading Flat UI -->
-    <link href="{% static 'query/resources/css/flat-ui.css' %}" rel="stylesheet">
-    <link href="{% static 'query/resources/css/docs.css' %}" rel="stylesheet">
+    <link href="../../static/query/resources/css/flat-ui.css" rel="stylesheet">
+    <link href="../../static/query/resources/css/docs.css" rel="stylesheet">
     
-    {%block extra_head%}
-		
-	{%endblock%}
+    <!-- Loading Flat UI -->
+    <link href="css/flat-ui.css" rel="stylesheet">
+    <link href="css/docs.css" rel="stylesheet">
+    
+    
     <!--styles-->
     <style>
 	html,body {
@@ -66,7 +67,7 @@
 		}
 	.profile-content {
 		background:rgb(243,243,243);
-		padding:50px;
+		padding:10px 20px;
 		width:70%;
 		}
 		
@@ -89,6 +90,7 @@
 	#name {
 		color:#000;
 		}
+		
 /*footer*/
     .bold {
 		font-weight:bolder;
@@ -122,7 +124,6 @@
 	footer a {
 		color:#fff;
 		}
-		
 /*	@media screen and (min-width:320px) and (max-width:480px){
 		.profile {
 			width:35%;
@@ -132,23 +133,6 @@
 			}
 		
 		}*/
-		@media (max-width:768px) and (min-width:250px){
-		footer .row {
-			margin-left:85px;
-			}
-		}
-	@media (max-width:991px) and (min-width:767px){
-		footer .row {
-			margin-left:-225px;
-			}
-		}
-	@media (max-width:1200px) and (min-width:991px){
-		footer .row {
-			margin-left:-110px;
-			}
-		}
-		{%block style%}
-		{%endblock%}
 	</style>
 </head>
 
@@ -162,7 +146,7 @@
              </div>
              <div class="but col-lg-5 col-md-5 col-xs-5 pull-right">
               <div class="col-lg-3 col-md-3 col-xs-3">
-                <a href="/" class="btn btn-embossed btn-block btn-primary">HOME</a>
+                <a href="#" class="btn btn-embossed btn-block btn-primary">HOME</a>
               </div>
               <div class="col-lg-3 col-md-3 col-xs-3" style="width:170px;">
                 <a href="#" class="btn btn-embossed btn-block btn-primary" style="width:150px;">HOW IT WORKS</a>
@@ -172,18 +156,60 @@
               </div>
               <div class="col-lg-3 col-md-3 col-xs-3">
                 <a href="#" class="btn btn-embossed btn-block btn-primary">LOGIN</a>
-              </div>
-             </div>
+              </div>  
+             </div>       
           </div>
        </div>
     </header>
     
 <!--container-->
     <div id="main">
-		{%block content%}
-		{%endblock%}
-	</div>
-     <footer>
+      <div class="profile">
+         <img id="user" src="images/exaple-image.jpg" alt="sample-image" class="img-circle">
+         <center><span id="name" class="user-name">{{user}}</span></center>
+         <center><div id="default"></div></center>
+         <div class="col-md-10 col-xs-10" style="margin:7%;">
+            <a href="#" class="btn btn-block btn-lg btn-primary">Events</a>
+            <a href="#" class="btn btn-block btn-lg btn-primary">Messages</a>
+         </div>
+      </div>
+      <div class="profile-content">
+         <h5 style="padding-bottom:10px;border-bottom:1px solid #000;">Received Quotes</h5>
+         <div class="row">
+           <div class="col-md-2">
+             <h6>#1234</h6>
+           </div>
+           <div class="col-md-3">
+             <h6>Photographer</h6>
+           </div>
+           <div class="col-md-3">
+             <h6>Quote Price</h6>
+           </div>
+           <div class="col-md-4">
+             <h6>Info</h6>
+           </div>
+         </div>
+         {% for object in obj_list %}
+         <div class="row">
+           <div class="col-md-2">
+             <span class="btn btn-xs btn-primary">Accept</span>
+           </div>
+           <div class="col-md-3">
+             <span>{{object.req.target.username}}</span>
+           </div>
+           <div class="col-md-3">
+             <span>{{object.price_range}}</span>
+           </div>
+           <div class="col-md-4">
+             <p style="font-size:14px">{{object.desc}}</p>
+           </div>
+         </div>
+         {% endfor %}
+      </div>
+    </div>
+    
+<!--footer-->
+    <footer>
       <div class="foot container">
         <div class="row">
           <div class="col-lg-4 col-md-4 col-xs-4 fff">
@@ -227,19 +253,24 @@
     </div>
     
     <!-- Load JS here for greater good =============================-->
-    <script src="{% static 'query/resources/js/jquery-1.8.3.min.js' %}"></script>
-    <script src="{% static 'query/resources/js/jquery-ui-1.10.3.custom.min.js' %}"></script>
-    <script src="{% static 'query/resources/js/jquery.ui.touch-punch.min.js' %}"></script>
-    <script src="{% static 'query/resources/js/bootstrap.min.js' %}"></script>
-    <script src="{% static 'query/resources/js/bootstrap-select.js' %}"></script>
-    <script src="{% static 'query/resources/js/bootstrap-switch.js' %}"></script>
-    <script src="{% static 'query/resources/js/flatui-checkbox.js' %}"></script>
-    <script src="{% static 'query/resources/js/flatui-radio.js' %}"></script>
-    <script src="{% static 'query/resources/js/jquery.tagsinput.js' %}"></script>
-    <script src="{% static 'query/resources/js/jquery.placeholder.js' %}"></script>
-    <script type="text/javascript">
-	{%block scripts%}
-	{%endblock%}
-    </script>
+    <script src="../../static/query/resources/js/jquery-1.8.3.min.js"></script>
+    <script src="../../static/query/resources/js/jquery-ui-1.10.3.custom.min.js"></script>
+    <script src="../../static/query/resources/js/jquery.ui.touch-punch.min.js"></script>
+    <script src="../../static/query/resources/js/bootstrap.min.js"></script>
+    <script src="../../static/query/resources/js/bootstrap-select.js"></script>
+    <script src="../../static/query/resources/js/bootstrap-switch.js"></script>
+    <script src="../../static/query/resources/js/flatui-checkbox.js"></script>
+    <script src="../../static/query/resources/js/flatui-radio.js"></script>
+    <script src="../../static/query/resources/js/jquery.tagsinput.js"></script>
+    <script src="../../static/query/resources/js/jquery.placeholder.js"></script>
+    <script src="lib/jquery.raty.js"></script>
+	<script src="demo/javascripts/labs.js"></script>
+  <!--  <script type="text/javascript">
+	$.fn.raty.defaults.path = 'lib/images';
+	$(function(){
+		$('#default').raty();
+		});
+
+    </script>-->
 </body>
 </html>

@@ -11,8 +11,26 @@ class CityTemplateView(TemplateView):
 	def get_context_data(self):
 		ctx = super(CityTemplateView, self).get_context_data()
 		ctx['city'] = self.request.GET['city']
+		cities = []
+		types = []
+		for pgr in PGRData.objects.all():
+			if pgr.city not in cities:
+				cities.append(pgr.city)
+			if pgr.type not in types:
+				types.append(pgr.type)
+		cities.remove(ctx['city'])
+		ctx['cities'] = cities
+		ctx['types'] = types
 		return ctx
-
+class HomeTemplateView(TemplateView):
+	def get_context_data(self):
+		ctx = super(HomeTemplateView, self).get_context_data()
+		cities = []
+		for pgr in PGRData.objects.all():
+			if pgr.city not in cities:
+				cities.append(pgr.city)
+		ctx['cities'] = cities
+		return ctx
 # implement a validation mechanism
 def validate_city(city):
 	return 1

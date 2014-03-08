@@ -1,11 +1,48 @@
-<div class="detail_header">
-	Quote Details
-</div>
+
+{%block title%}Quote Details{%endblock%}
+
+{%block content%}
 {% for object in obj_list %}
-<div class="quote_item" onclick="">
-<div class="detail_type">Customer: {{object.source}}</div>
-<div class="detail_desc">Photographer: {{object.target}}</div>
-<div class="detail_name">Event: {{object.desc}}</div>
-<div class="quote-req-container"><button id="quote-req-button" value="ACCEPT QUOTE" onclick="ajax_direct_dump('../../quote/qdetails/',{id:{{object.pk}}},'GET','record-container')">See Details</div>
-</div>
-{%endfor%}
+<div class="profile">
+         <img id="user" src="images/exaple-image.jpg" alt="sample-image" class="img-circle">
+         <center><span id="name" class="user-name">{{user}}</span></center>
+         <center><div id="default"></div></center>
+         <div class="col-md-10 col-xs-10" style="margin:7%;">
+            <a href="#" class="btn btn-block btn-lg btn-primary">Events</a>
+            <a href="#" class="btn btn-block btn-lg btn-primary">Messages</a>
+         </div>
+      </div>
+      <div class="profile-content">
+         <h5 style="padding-bottom:10px;border-bottom:1px solid #000;">Received Quotes</h5>
+         <div class="row">
+           <div class="col-md-2">
+             <h6>#1234</h6>
+           </div>
+           <div class="col-md-3">
+             <h6>Photographer</h6>
+           </div>
+           <div class="col-md-3">
+             <h6>Quote Price</h6>
+           </div>
+           <div class="col-md-4">
+             <h6>Info</h6>
+           </div>
+         </div>
+         {% for object in obj_list %}
+         <div class="row">
+           <div class="col-md-2">
+             <span class="btn btn-xs btn-primary">Accept</span>
+           </div>
+           <div class="col-md-3">
+             <span>{{object.req.target.username}}</span>
+           </div>
+           <div class="col-md-3">
+             <span>{{object.price_range}}</span>
+           </div>
+           <div class="col-md-4">
+             <p style="font-size:14px">{{object.desc}}</p>
+           </div>
+         </div>
+         {% endfor %}
+      </div>
+{%endblock%}

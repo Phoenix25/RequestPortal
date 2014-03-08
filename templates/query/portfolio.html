@@ -3,25 +3,62 @@
 <!-- use i.doc.url to access a single image -->
 {% extends 'flat-ui-base.html'%}
 {%block title%}Portfolio{%endblock%}
+{%block extra_head%}
+    <link href="../../static/query/resources/css/search.css" rel="stylesheet">
+{%endblock%}
 {%block content%}
 <div class="profile">
-         <img id="user" src="../../static/query/resources/images/exaple-image.jpg" alt="sample-image" class="img-circle">
-         <center><span id="name" class="user-name">Name must be given here</span></center>
+         <img id="user" src="{{pgr.avatar.url}}" alt="sample-image" class="img-circle">
+         <center><span id="name" class="user-name">{{pgr.user.username}} {{pgr.user.first_name}}</span></center>
          <center><div id="default"></div></center>
          <div class="col-lg-10 col-md-10 col-xs-10" style="margin:7%;">
             <a href="#" class="btn btn-block btn-lg btn-primary">About</a>
-            <a href="#" class="btn btn-block btn-lg btn-primary">Portfolio</a>
-            <a href="#" class="btn btn-block btn-lg btn-primary">Reviews</a>
-            <a href="#" class="btn btn-block btn-lg btn-primary">Hire</a>
+            <a href="{%url 'portfolio' pk=pgr.user.pk page='1' %}" class="btn btn-block btn-lg btn-primary active">Portfolio</a>
+            <a href="{%url 'reviewlist' pk=pgr.user.pk %}" class="btn btn-block btn-lg btn-primary">Reviews</a>
+            <a href="{%url 'hire' target=pgr.user.pk%}" class="btn btn-block btn-lg btn-primary">Hire</a>
          </div>
       </div>
 	   <div class="profile-content">
-<div id="portfolio">
-	{%for i in object_list%}
-		<div class="img-container col-xs-4">
-			<img src="{{i.doc.url}}" style = "height:200px"></img>
+			<div id="portfolio">
+				{%for i in object_list%}
+				<div class="img-container col-xs-6 col-lg-4">
+					<a href="#">
+					<img src="{{i.doc.url}}" style = "width:100%"></img>
+					</a>
+				</div>
+				{%endfor%}
+			</div> 
+			{% if paginator %}
+			<div class="col-xs-12" style="text-align:center">
+			<div class="pagination" id="paginator" style="margin-right:auto;margin-left:auto;margin-top:50px;">
+				<ul>
+					<li class="previous"><a href="
+					{%if paginator_prev%}
+					{%url 'portfolio' pk page|add:'-1' %}
+					{%else%}
+					#
+					{%endif%}
+					" class="fui-arrow-left"></a></li>
+					{%for num in pages%}
+					<li><a href="{%url 'portfolio' pk num.number%}" class='{{num.class}}'>{{num.number}}</a></li>
+					{%endfor%}
+					
+					<li class="next"><a href="
+					{%if paginator_next%}
+					{%url 'portfolio' pk page|add:'+1' %}
+					{%else%}
+					#
+					{%endif%}
+					" class="fui-arrow-right"></a></li>
+					
+				</ul>
+          </div>
+		  </div>
+		  {%endif%}
 		</div>
-	{%endfor%}
-</div> 
-</div>
+{%endblock%}
+{%block style%}
+.img-container{
+	margin-top:15px
+}
 {%endblock%}

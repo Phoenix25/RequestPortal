@@ -1,5 +1,5 @@
 {% load url from future %}
-
+{% load staticfiles %}
 <!doctype html>
 <html>
 <head>
@@ -15,6 +15,8 @@
     <link href="../../static/query/resources/css/flat-ui.css" rel="stylesheet">
     <link href="css/docs.css" rel="stylesheet">
     
+	<link href="{%static 'query/resources/css/select2-bootstrap.css'%}" rel="stylesheet">
+	<link href="{%static 'query/resources/css/select2.css'%}" rel="stylesheet">
     <!--styles-->
     <style>
 	html,body {
@@ -77,11 +79,11 @@
 		}
 		
 	.hire-content {
-		position:absolute;
+		
 		left:503px;/*36.8%*/
 		width:360px;
 		height:120px;
-		margin:10px auto;
+		margin:auto;
 		}
 		
 	#main #modal .col-md-12,.col-md-8,.col-md-4 {
@@ -168,9 +170,13 @@
        <div id="modal">
          <div class="hire-content">
           <span class="h2" style="color:#fff;">HIRE</span>
-          <i style="position:absolute;top:3px;padding-left:3px;">the best photographer to capture your happy moments</i><br>
+          <i style="position:absolute;top:10px;padding-left:3px;">the best photographer to <br>capture your happy moments</i><br>
           <div class="col-md-8 col-xs-8" style="margin-left:-10px;">
-            <input class="form-control" name="city" type="text" placeholder="Location" value=""/>
+            <select class="form-control" id="search-city" name="city" type="text" placeholder="Select Location">
+				{%for i in cities%}
+					<option>{{i}}</option>
+				{%endfor%}
+			</select>
           </div>
           <div class="col-md-4 col-xs-4">
             <a href="#" id = 'search-button' class="btn btn-block btn-md btn-primary">Search</a>
@@ -250,12 +256,15 @@
 "../../static/query/resources/js/jquery.tagsinput.js"></script>
     <script src=
 "../../static/query/resources/js/jquery.placeholder.js"></script>
+<script src="{% static 'query/resources/js/select2.js'%}"></script>
 	<script type = "text/javascript">
 		$(document).ready(function(){
 			$("#search-button").click(function(){
 				$("#search-form").submit();
 			});
+			//$("#search-city").select2();
 		});
+		
 	</script>
 </body>
 </html>
