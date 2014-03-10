@@ -47,9 +47,9 @@
 		width:100px;
 		}
 		
-	#header .but>*>* {
+	/*#header .but>*>* {
 		width:80px;
-		}
+		}*/
 		
 	/*#main container*/
 	#main {
@@ -143,18 +143,29 @@
              <div class="title col-md-2 col-xs-2 col-xs-offset-1 col-md-offset-1">
                 <span class="h4"><span class="bold">hire</span>fellas</span>
              </div>
+			 
              <div class="but col-md-5 col-xs-5 pull-right">
-              <div class="col-md-3 col-xs-3">
+              <div class="col-md-2 col-xs-2">
                 <a href="#" class="btn btn-block btn-primary">HOME</a>
               </div>
               <div class="col-md-3 col-xs-3" style="width:170px;">
-                <a href="#" class="btn btn-block btn-primary" style="width:150px;">HOW IT WORKS</a>
+                <a href="#" onclick="scroll_to_main2()" class="btn btn-block btn-primary" style="width:150px;">HOW IT WORKS</a>
               </div> 
               <div class="col-md-3 col-xs-3">
                 <a href="#" class="btn btn-block btn-primary">ABOUT</a>
               </div>
-              <div class="col-md-3 col-xs-3">
-                <a href="#" class="btn btn-block btn-primary">LOGIN</a>
+              <div class="col-md-4 col-xs-4" style="">
+                {%if user.is_authenticated%}
+						<a href="
+						{%url 'accounts:auth_logout'%}" class="btn btn-primary" style="width:auto !important;padding-bottom:7px">
+						LOGOUT(<small>{{user}}</small>)
+					</a>
+					{%else%}
+						<a href="
+						{%url 'accounts:master_login'%}" class="btn btn-block btn-primary" style="width:auto !important;">
+						LOGIN
+					</a>
+					{%endif%}
               </div>  
              </div>       
           </div>
@@ -264,6 +275,12 @@
 			});
 			//$("#search-city").select2();
 		});
+		function scroll_to_main2(){
+			//alert('scrolling');
+			$("body, html").animate({
+				scrollTop: $("#main2").offset().top
+			});
+		}
 		
 	</script>
 </body>

@@ -22,8 +22,8 @@
 			<div id="portfolio">
 				{%for i in object_list%}
 				<div class="img-container col-xs-6 col-lg-4">
-					<a href="#">
-					<img src="{{i.doc.url}}" style = "width:100%"></img>
+					<a href="#" class='thumbnail'>
+					<img class='portfolio-img' src="{{i.doc.url}}" style = "width:100%;z-index:0"></img>
 					</a>
 				</div>
 				{%endfor%}
@@ -56,6 +56,8 @@
 		  </div>
 		  {%endif%}
 		</div>
+{%endblock%}
+{%block scripts%}
 {%endblock%}
 {%block style%}
 .img-container{

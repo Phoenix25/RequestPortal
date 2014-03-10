@@ -1,4 +1,4 @@
-from django.shortcuts import render
+from django.shortcuts import render, redirect
 from django.views.generic.edit import FormView
 from django.views.generic.detail import DetailView
 from django.views.generic.list import ListView
@@ -56,13 +56,13 @@ class QuoteRequestView(FormView):
 		return [pgr]
 	
 	def redirect_login(self):
-		raise PermissionDenied("Not logged in")
+		return redirect('accounts:master_login')
 	
 	# override the root method that is always called no matter what the request type.
 	def dispatch(self,request,*args,**kwargs):
 		# redirect to login if the user is not logged in.
-		if not request.user.is_authenticated:
-			self.redirect_login()
+		if not request.user.is_authenticated():
+			return self.redirect_login()
 		else:
 			return super(QuoteRequestView,self).dispatch(request,*args,**kwargs)
 	
@@ -134,7 +134,7 @@ class QuoteRequestDetailView(DetailView):
 	def dispatch(self, request, *args, **kwargs):
 		
 		if not self.request.user.is_authenticated:
-			return redirect("accounts:login")
+			return redirect("socialauth_begin")
 		
 		if not QuoteRequest.objects.filter(pk = self.request.GET['id'])[0].source == self.request.user:
 			raise PermissionDenied("Not Allowed")
@@ -201,9 +201,9 @@ class QuoteListView(ListView):
 	user_category = -1
 	
 	def dispatch(self, request, *args, **kwargs):
-		import pdb;pdb.set_trace()
-		if not self.request.user.is_authenticated:
-			return redirect("accounts:login")
+		#import pdb;pdb.set_trace()
+		if not self.request.user.is_authenticated():
+			return redirect("socialauth_begin",'facebook')
 				
 		if Group.objects.filter(pk=1)[0] in request.user.groups.all():
 			self.template_name = "quote/pgr-quote-list.html"

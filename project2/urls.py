@@ -17,7 +17,7 @@ urlpatterns = patterns('',
     url(r'^admin/', include(admin.site.urls)),
 	url(r'^query/', include('query.urls', namespace='query')),
 	url(r'^quote/', include('quote.urls', namespace='quote')),
-	url(r'^openid/',include('social_auth.urls')),
+	url(r'^oauth/',include('social_auth.urls')),
 	url(r'^accounts/', include('accounts.urls', namespace='accounts')),
 	url(r'^$', HomeTemplateView.as_view(template_name="homepage1.html"), name="index"),
 	url(r'^review/', include('review.urls', namespace='review')),
@@ -29,5 +29,6 @@ urlpatterns = patterns('',
                            name='hire'),
 	url(r'^pgrs/(?P<pk>\d+)/reviews/',review.views.ReviewListView.as_view(),
                            name='reviewlist'),
+	
 	
 )+ static(settings.MEDIA_URL, document_root="")

@@ -1,0 +1,9 @@
+{%extends 'flat-ui-base.html'%}
+{%load url from future%}
+
+{%block title%}Login{%endblock%}
+
+{%block content%}
+As Photographer:	<a href='{%url "accounts:auth_login"%}' class='btn btn-primary btn-large'>LOGIN</a><br>
+As User: 			<br> <a href='{%url "socialauth_begin" "facebook"%}' class='btn btn-primary btn-large'>Facebook</a>
+{%endblock%}

@@ -1,6 +1,7 @@
 from django.shortcuts import render
 from django.views.generic.edit import UpdateView,CreateView
 from django.views.generic.detail import DetailView
+from django.views.generic.base import TemplateView
 from django.views.generic.list import ListView
 from registration.backends.simple.views import RegistrationView
 from accounts.forms import DetailForm, UploadForm
@@ -204,10 +205,25 @@ class UploadLists(ListView):
 		if not pg==1:
 			ctx['paginator_prev'] = 1
 			
-		if not pg==len(res):
+		if not pg==int(math.ceil(len(res)/self.numdocs))+1:
 			ctx['paginator_next'] = 1
 		ctx['page'] = self.kwargs['page']
 		ctx['pk'] = self.kwargs['pk']
 		ctx['pgr'] = PGRData.objects.filter(user = User.objects.filter(pk = self.kwargs['pk'] ) [0] ) [0]
 
 		return ctx
+
+# social auth pipeline backend
+def set_user_group(backend, details, response, uid, username, user=None, *args,**kwargs):
+	# get user from the create_user pipeline backend
+	if not user.groups.all().count():
+		user.groups.add("2")
+		user.save()
+		
+	return {'user':user}
+
+def masterlogin(request):
+	if request.user.is_authenticated():
+		return HttpResponse("Already logged in. Please logout first")
+	else:
+		return TemplateView.as_view(template_name="registration/master-login.html")(request)

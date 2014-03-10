@@ -68,6 +68,11 @@ urlpatterns = patterns('',
 						url(r'^upload-list/$',
                            UploadLists.as_view(),
                            name='portfolio'),
+						url(r'^master/$',
+							'accounts.views.masterlogin',
+							name='master_login'
+							)
+						
                        )
                        
 						

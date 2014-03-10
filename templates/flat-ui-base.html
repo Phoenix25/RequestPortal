@@ -161,17 +161,29 @@
                 <span class="h4"><span class="bold">hire</span>fellas</span>
              </div>
              <div class="but col-lg-5 col-md-5 col-xs-5 pull-right">
-              <div class="col-lg-3 col-md-3 col-xs-3">
+              <div class="col-lg-2 col-md-2 col-xs-2">
                 <a href="/" class="btn btn-embossed btn-block btn-primary">HOME</a>
               </div>
               <div class="col-lg-3 col-md-3 col-xs-3" style="width:170px;">
-                <a href="#" class="btn btn-embossed btn-block btn-primary" style="width:150px;">HOW IT WORKS</a>
+                <a href="/#main2" class="btn btn-embossed btn-block btn-primary" style="width:150px;">HOW IT WORKS</a>
               </div> 
               <div class="col-lg-3 col-md-3 col-xs-3">
                 <a href="#" class="btn btn-embossed btn-block btn-primary">ABOUT</a>
               </div>
-              <div class="col-lg-3 col-md-3 col-xs-3">
-                <a href="#" class="btn btn-embossed btn-block btn-primary">LOGIN</a>
+              <div class="col-lg-4 col-md-4 col-xs-4">
+                
+				{%if user.is_authenticated%}
+						<a href="
+						{%url 'accounts:auth_logout'%}" class="btn btn-embossed btn-primary" style="width:auto !important;padding-bottom:7px">
+						LOGOUT(<small>{{user}}</small>)
+					</a>
+					{%else%}
+						<a href="
+						{%url 'accounts:auth_logout'%}" class="btn btn-embossed btn-block btn-primary" style="width:auto !important;">
+						LOGIN
+					</a>
+					{%endif%}
+				
               </div>
              </div>
           </div>
@@ -237,6 +249,7 @@
     <script src="{% static 'query/resources/js/flatui-radio.js' %}"></script>
     <script src="{% static 'query/resources/js/jquery.tagsinput.js' %}"></script>
     <script src="{% static 'query/resources/js/jquery.placeholder.js' %}"></script>
+	<!--<script src="{% static 'query/resources/js/jquery.imgview.js' %}"></script>-->
     <script type="text/javascript">
 	{%block scripts%}
 	{%endblock%}
