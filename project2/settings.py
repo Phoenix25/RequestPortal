@@ -22,7 +22,8 @@ SECRET_KEY = '015$i#v#4s7)tzzzmi7*f(wbl!0x(dvwif1r$jw6sp0_ot_355'
 # Put your facebook app details in your local-settings.py file
 # FACEBOOK_APP_ID
 # FACEBOOK_API_SECRET
-
+FACEBOOK_APP_ID = 666513986748230
+FACEBOOK_API_SECRET = "1279319f07856e371e37bbd6ed15c8c1"
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
@@ -41,12 +42,14 @@ SESSION_SERIALIZER = 'django.contrib.sessions.serializers.PickleSerializer'
 MEDIA_URL = '/media/'
 
 SOCIAL_AUTH_PIPELINE = (
-'social_auth.backends.pipeline.social.social_auth_user',
-'social_auth.backends.pipeline.associate.associate_by_email',
-'social_auth.backends.pipeline.misc.save_status_to_session',
-'social_auth.backends.pipeline.social.associate_user',
-'social_auth.backends.pipeline.social.load_extra_data',
-'social_auth.backends.pipeline.user.update_user_details',
+	'social_auth.backends.pipeline.social.social_auth_user',
+	#'social_auth.backends.pipeline.associate.associate_by_email',
+    'social_auth.backends.pipeline.user.get_username',
+    'social_auth.backends.pipeline.user.create_user',
+    'social_auth.backends.pipeline.social.associate_user',
+    'social_auth.backends.pipeline.social.load_extra_data',
+    'social_auth.backends.pipeline.user.update_user_details',
+	'accounts.views.set_user_group',
 ) 
 
 
