@@ -29,6 +29,9 @@ urlpatterns = patterns('',
                            name='hire'),
 	url(r'^pgrs/(?P<pk>\d+)/reviews/',review.views.ReviewListView.as_view(),
                            name='reviewlist'),
+	url(r'^about/$',TemplateView.as_view(template_name = 'static/about.html'), name = 'about'),
 	
+	url(r'^faq/$',TemplateView.as_view(template_name = 'static/faq.html'), name = 'faq'),
+	url(r'^contact/$',TemplateView.as_view(template_name = 'static/contact.html'), name = 'contact'),
 	
 )+ static(settings.MEDIA_URL, document_root="")

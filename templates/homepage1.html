@@ -199,8 +199,10 @@
 <!--container 2-->
     <div id="main2">
        
-    
-
+    	<div class='col-xs-12 col-md-8 col-md-offset-2' style='text-align:center'>
+    		<br>
+    		<img src='{% static "query/resources/images/how_it_works.jpg" %}' >
+    	</div>
 
     </div>
 <!--footer-->
@@ -209,17 +211,21 @@
         <div class="row">
           <div class="col-md-4 fff">
             <h3 class="footer-title"><span class="bold">hire</span>fellas</h3>
-            <p style="text-align:justify">Lorem Ipsum is simply dummy text of the printing and typesetting industry. Lorem Ipsum has been the industry's standard dummy text ever since the 1500s, when an unknown printer took a galley of type and scrambled it to make a type specimen book.</p>
-            <span>Phone : +91-9999999999</span><br>
-            <span>email : dummy@gmail.com</span>
+            <p style="text-align:justify">IIT Madras Incubation Cell (IITMIC) 3rd Floor<br>
+IIT Madras Research Park<br>
+Kanagam Road<br>
+Taramani<br>
+Chennai, India - 600113<br></p>
+            <div class='glyphicon glyphicon-earphone'></div> +91 9789 054683<br>
+	<div class='glyphicon glyphicon-envelope'></div> mail@hirefellas.com
           </div> 
 
           <div class="col-md-2 fff">
              <h3 class="footer-title foothead">Company</h3>
              <ul>
-                <li><a href="#">About</a></li>
-                <li><a href="#">FAQ</a></li>
-                <li><a href="#">Contact</a></li>
+                <li><a href="{% url 'about'%}">About</a></li>
+                <li><a href="{% url 'faq' %}">FAQ</a></li>
+                <li><a href="{% url 'contact' %}">Contact</a></li>
                 <li><a href="#">Terms</a></li>
                 <li><a href="#">Privacy</a></li>
                 <li><a href="#">Testimonals</a></li>
